@@ -2,48 +2,48 @@
 
 use webignition\ReadableDuration\ReadableDuration;
 
-class GetInMonthsTest extends BaseTest {     
+class GetInDaysTest extends BaseTest {     
     
-    public function testOneSecondInMonths() {
+    public function testOneSecondInDays() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(1);
         
-        $this->assertEquals(0, $readableDuration->getInMonths());
+        $this->assertEquals(0, $readableDuration->getInDays());
     }   
     
-    public function testOneMinuteInMonths() {
+    public function testOneMinuteInDays() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60);
         
-        $this->assertEquals(0, $readableDuration->getInMonths());
+        $this->assertEquals(0, $readableDuration->getInDays());
     }    
     
-    public function testOneHourInMonths() {
+    public function testOneHourInDays() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60);
         
-        $this->assertEquals(0, $readableDuration->getInMonths());
+        $this->assertEquals(0, $readableDuration->getInDays());
     }    
     
-    public function testOneDayInMonths() {
+    public function testOneDayInDays() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60 * 24);
         
-        $this->assertEquals(0, $readableDuration->getInMonths());
+        $this->assertEquals(1, $readableDuration->getInDays());
     }    
      
-    public function testOneMonthInMonths() {
+    public function testOneMonthInDays() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60 * 24 * (365.25 / 12));
         
-        $this->assertEquals(1, $readableDuration->getInMonths());
+        $this->assertEquals(30, $readableDuration->getInDays());
     }    
     
-    public function testOneYearInMonths() {
+    public function testOneYearInDays() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60 * 24 * 365);
         
-        $this->assertEquals(12, $readableDuration->getInMonths());
+        $this->assertEquals(365, $readableDuration->getInDays());
     }   
         
 }

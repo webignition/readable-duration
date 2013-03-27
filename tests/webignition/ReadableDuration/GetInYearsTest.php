@@ -8,35 +8,35 @@ class GetInYearsTest extends BaseTest {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(1);
         
-        $this->assertEquals(3.2150205761317E-8, $readableDuration->getInYears());
+        $this->assertEquals(0, $readableDuration->getInYears());
     }   
     
     public function testOneMinuteInYears() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60);
         
-        $this->assertEquals(1.929012345679E-6, $readableDuration->getInYears());
+        $this->assertEquals(0, $readableDuration->getInYears());
     }    
     
     public function testOneHourInYears() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60);
         
-        $this->assertEquals(0.000116, round($readableDuration->getInYears(), 6));
+        $this->assertEquals(0, $readableDuration->getInYears());
     }    
     
     public function testOneDayInYears() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60 * 24);
         
-        $this->assertEquals(0.0028, round($readableDuration->getInYears(), 4));
+        $this->assertEquals(0, $readableDuration->getInYears());
     }    
      
     public function testOneMonthInYears() {
         $readableDuration = new ReadableDuration();
-        $readableDuration->setValueInSeconds(60 * 60 * 24 * 30);
+        $readableDuration->setValueInSeconds(60 * 60 * 24 * (365.25 / 12));
         
-        $this->assertEquals(0.083, round($readableDuration->getInYears(), 3));
+        $this->assertEquals(0, $readableDuration->getInYears());
     }    
     
     public function testOneYearInYears() {
@@ -45,5 +45,40 @@ class GetInYearsTest extends BaseTest {
         
         $this->assertEquals(1, $readableDuration->getInYears());
     }   
+    
+    public function testOnePointFiveYearInYears() {
+        $readableDuration = new ReadableDuration();
+        $readableDuration->setValueInSeconds((60 * 60 * 24 * 365) * 1.5);
+        
+        $this->assertEquals(1, $readableDuration->getInYears());
+    }     
+    
+    public function testOnePointSixYearInYears() {
+        $readableDuration = new ReadableDuration();
+        $readableDuration->setValueInSeconds((60 * 60 * 24 * 365) * 1.6);
+        
+        $this->assertEquals(2, $readableDuration->getInYears());
+    }      
+    
+    public function testOnePointNineYearInYears() {
+        $readableDuration = new ReadableDuration();
+        $readableDuration->setValueInSeconds((60 * 60 * 24 * 365) * 1.9);
+        
+        $this->assertEquals(2, $readableDuration->getInYears());
+    }       
+    
+    public function testTwoYearInYears() {
+        $readableDuration = new ReadableDuration();
+        $readableDuration->setValueInSeconds((60 * 60 * 24 * 365) * 2);
+        
+        $this->assertEquals(2, $readableDuration->getInYears());
+    }     
+    
+    public function testTwoPointOneYearInYears() {
+        $readableDuration = new ReadableDuration();
+        $readableDuration->setValueInSeconds((60 * 60 * 24 * 365) * 2.1);
+        
+        $this->assertEquals(2, $readableDuration->getInYears());
+    }    
         
 }

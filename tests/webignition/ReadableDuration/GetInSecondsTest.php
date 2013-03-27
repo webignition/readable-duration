@@ -2,48 +2,48 @@
 
 use webignition\ReadableDuration\ReadableDuration;
 
-class GetInMonthsTest extends BaseTest {     
+class GetInSecondsTest extends BaseTest {     
     
-    public function testOneSecondInMonths() {
+    public function testOneSecondInSeconds() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(1);
         
-        $this->assertEquals(0, $readableDuration->getInMonths());
+        $this->assertEquals(1, $readableDuration->getInSeconds());
     }   
     
-    public function testOneMinuteInMonths() {
+    public function testOneMinuteInSeconds() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60);
         
-        $this->assertEquals(0, $readableDuration->getInMonths());
-    }    
+        $this->assertEquals(60, $readableDuration->getInSeconds());
+    }      
     
-    public function testOneHourInMonths() {
+    public function testOneHourInSeconds() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60);
         
-        $this->assertEquals(0, $readableDuration->getInMonths());
+        $this->assertEquals(3600, $readableDuration->getInSeconds());
     }    
     
-    public function testOneDayInMonths() {
+    public function testOneDayInSeconds() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60 * 24);
         
-        $this->assertEquals(0, $readableDuration->getInMonths());
+        $this->assertEquals(86400, $readableDuration->getInSeconds());
     }    
      
-    public function testOneMonthInMonths() {
+    public function testOneMonthInSeconds() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60 * 24 * (365.25 / 12));
         
-        $this->assertEquals(1, $readableDuration->getInMonths());
+        $this->assertEquals(2629800, $readableDuration->getInSeconds());
     }    
     
-    public function testOneYearInMonths() {
+    public function testOneYearInSeconds() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(60 * 60 * 24 * 365);
         
-        $this->assertEquals(12, $readableDuration->getInMonths());
+        $this->assertEquals(31536000, $readableDuration->getInSeconds());
     }   
         
 }

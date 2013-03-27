@@ -9,6 +9,14 @@ class ReadableDuration {
     const HOURS_PER_DAY = 24;
     const DAYS_PER_MONTH = 30; // approximate!
     const MONTHS_PER_YEAR = 12;
+    const DAYS_PER_YEAR = 365.25; // approximate!
+    
+    
+    /**
+     *
+     * @var int
+     */
+    private $valueInSeconds = 0;
     
     
     /**
@@ -46,12 +54,14 @@ class ReadableDuration {
             $valueInSeconds = (int)$valueInSeconds;
         }
         
+        $this->valueInSeconds = $valueInSeconds;
+        
         $currentTime = new \DateTime();
         
-        if ($valueInSeconds === 0) {
+        if ($this->valueInSeconds === 0) {
             $comparatorTime = $currentTime;
         } else {
-            $comparatorTime = new \DateTime('+'.$valueInSeconds.' second');
+            $comparatorTime = new \DateTime('+'.$this->valueInSeconds.' second');
         }
         
         $this->isFuture = $currentTime <= $comparatorTime;        
@@ -108,7 +118,7 @@ class ReadableDuration {
      * @return double
      */
     public function getInYears() {        
-        return $this->getInSeconds() / $this->getSecondsPerYear();
+        return (int)round($this->getInSeconds() / $this->getSecondsPerYear());
     }
     
     
@@ -125,8 +135,8 @@ class ReadableDuration {
      * 
      * @return double
      */
-    public function getInMonths() {
-        return $this->getInSeconds() / $this->getSecondsPerMonth();
+    public function getInMonths() {        
+        return (int)round($this->getInSeconds() / $this->getSecondsPerMonth());
     }
     
     
@@ -141,6 +151,15 @@ class ReadableDuration {
     
     /**
      * 
+     * @return double
+     */
+    public function getInDays() {        
+        return (int)round($this->getInSeconds() / $this->getSecondsPerDay());
+    }    
+    
+    
+    /**
+     * 
      * @return int
      */    
     public function getHours() {
@@ -150,11 +169,29 @@ class ReadableDuration {
     
     /**
      * 
+     * @return double
+     */
+    public function getInHours() {        
+        return (int)round($this->getInSeconds() / $this->getSecondsPerHour());
+    }    
+    
+    
+    /**
+     * 
      * @return int
      */    
     public function getMinutes() {        
         return $this->interval->i;        
     }
+    
+    
+    /**
+     * 
+     * @return double
+     */
+    public function getInMinutes() {        
+        return (int)round($this->getInSeconds() / self::SECONDS_PER_MINUTE);
+    }     
     
     
     /**
@@ -171,14 +208,7 @@ class ReadableDuration {
      * @return int
      */
     public function getInSeconds() {
-        $inSeconds  = $this->getSeconds();
-        $inSeconds += $this->getMinutes() * self::SECONDS_PER_MINUTE;
-        $inSeconds += $this->getHours() * $this->getSecondsPerHour();
-        $inSeconds += $this->getDays() * $this->getSecondsPerDay();
-        $inSeconds += $this->getMonths() * $this->getSecondsPerMonth();
-        $inSeconds += $this->getYears() * $this->getSecondsPerYear();
-        
-        return $inSeconds;
+        return $this->valueInSeconds;
     }
     
     
@@ -206,7 +236,7 @@ class ReadableDuration {
      * @return int
      */
     private function getSecondsPerMonth() {
-        return $this->getSecondsPerDay() * self::DAYS_PER_MONTH;
+        return $this->getSecondsPerDay() * (self::DAYS_PER_YEAR / self ::MONTHS_PER_YEAR);
     }
     
     
@@ -215,7 +245,7 @@ class ReadableDuration {
      * @return int
      */
     private function getSecondsPerYear() {
-        return $this->getSecondsPerMonth() * self::MONTHS_PER_YEAR;
+        return $this->getSecondsPerDay() * self::DAYS_PER_YEAR;
     }
 
 }
