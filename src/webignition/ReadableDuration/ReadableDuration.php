@@ -123,6 +123,15 @@ class ReadableDuration {
     
     /**
      * 
+     * @return double
+     */
+    public function getInMonths() {
+        return $this->getInSeconds() / $this->getSecondsPerMonth();
+    }
+    
+    
+    /**
+     * 
      * @return int
      */    
     public function getDays() {
