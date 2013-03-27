@@ -2,38 +2,38 @@
 
 use webignition\ReadableDuration\ReadableDuration;
 
-class GetYearsTest extends BaseTest {     
+class GetDaysTest extends BaseTest {     
     
-    public function testPositiveZeroYears() {
+    public function testPositiveZeroDays() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(3600);
         
-        $this->assertEquals(0, $readableDuration->getYears());        
+        $this->assertEquals(0, $readableDuration->getDays());        
         $this->assertTrue($readableDuration->isFuture());
     }
     
-    public function testNegativeZeroYears() {
+    public function testNegativeZeroDays() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(-3600);
         
-        $this->assertEquals(0, $readableDuration->getYears());        
+        $this->assertEquals(0, $readableDuration->getDays());        
         $this->assertFalse($readableDuration->isFuture());
     }    
     
-    public function testPositiveOneYear() {
+    public function testPositiveOneDay() {
         $readableDuration = new ReadableDuration();
-        $readableDuration->setValueInSeconds(60 * 60 * 24 * 400);
+        $readableDuration->setValueInSeconds(60 * 60 * 24);
         
-        $this->assertEquals(1, $readableDuration->getYears());            
+        $this->assertEquals(1, $readableDuration->getDays());            
         $this->assertTrue($readableDuration->isFuture());
     }
     
-    public function testNegativeOneYear() {
+    public function testNegativeOneDay() {
         $readableDuration = new ReadableDuration();
-        $readableDuration->setValueInSeconds(60 * 60 * 24 * 400 * -1);
+        $readableDuration->setValueInSeconds(60 * 60 * 24 * -1);
         
-        $this->assertEquals(1, $readableDuration->getYears());            
+        $this->assertEquals(1, $readableDuration->getDays());            
         $this->assertFalse($readableDuration->isFuture());
-    }    
+    }   
     
 }

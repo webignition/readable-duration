@@ -2,38 +2,38 @@
 
 use webignition\ReadableDuration\ReadableDuration;
 
-class GetYearsTest extends BaseTest {     
+class GetMonthsTest extends BaseTest {     
     
-    public function testPositiveZeroYears() {
+    public function testPositiveZeroMonths() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(3600);
         
-        $this->assertEquals(0, $readableDuration->getYears());        
+        $this->assertEquals(0, $readableDuration->getMonths());        
         $this->assertTrue($readableDuration->isFuture());
     }
     
-    public function testNegativeZeroYears() {
+    public function testNegativeZeroMonths() {
         $readableDuration = new ReadableDuration();
         $readableDuration->setValueInSeconds(-3600);
         
-        $this->assertEquals(0, $readableDuration->getYears());        
+        $this->assertEquals(0, $readableDuration->getMonths());        
         $this->assertFalse($readableDuration->isFuture());
     }    
     
-    public function testPositiveOneYear() {
+    public function testPositiveOneMonth() {
         $readableDuration = new ReadableDuration();
-        $readableDuration->setValueInSeconds(60 * 60 * 24 * 400);
+        $readableDuration->setValueInSeconds(60 * 60 * 24 * 40);
         
-        $this->assertEquals(1, $readableDuration->getYears());            
+        $this->assertEquals(1, $readableDuration->getMonths());            
         $this->assertTrue($readableDuration->isFuture());
     }
     
-    public function testNegativeOneYear() {
+    public function testNegativeOneMonth() {
         $readableDuration = new ReadableDuration();
-        $readableDuration->setValueInSeconds(60 * 60 * 24 * 400 * -1);
+        $readableDuration->setValueInSeconds(60 * 60 * 24 * 40 * -1);
         
-        $this->assertEquals(1, $readableDuration->getYears());            
+        $this->assertEquals(1, $readableDuration->getMonths());            
         $this->assertFalse($readableDuration->isFuture());
-    }    
+    }   
     
 }
