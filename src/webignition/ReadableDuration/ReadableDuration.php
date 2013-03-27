@@ -6,7 +6,9 @@ class ReadableDuration {
     
     const SECONDS_PER_MINUTE = 60;
     const MINUTES_PER_HOUR = 60;
-    const HOURS_PER_DAY = 24;   
+    const HOURS_PER_DAY = 24;
+    const DAYS_PER_MONTH = 30; // approximate!
+    const MONTHS_PER_YEAR = 12;
     
     
     /**
@@ -103,6 +105,15 @@ class ReadableDuration {
     
     /**
      * 
+     * @return double
+     */
+    public function getInYears() {        
+        return $this->getInSeconds() / $this->getSecondsPerYear();
+    }
+    
+    
+    /**
+     * 
      * @return int
      */
     public function getMonths() {
@@ -143,6 +154,59 @@ class ReadableDuration {
      */    
     public function getSeconds() {
         return $this->interval->s;
+    }
+    
+    
+    /**
+     * 
+     * @return int
+     */
+    public function getInSeconds() {
+        $inSeconds  = $this->getSeconds();
+        $inSeconds += $this->getMinutes() * self::SECONDS_PER_MINUTE;
+        $inSeconds += $this->getHours() * $this->getSecondsPerHour();
+        $inSeconds += $this->getDays() * $this->getSecondsPerDay();
+        $inSeconds += $this->getMonths() * $this->getSecondsPerMonth();
+        $inSeconds += $this->getYears() * $this->getSecondsPerYear();
+        
+        return $inSeconds;
+    }
+    
+    
+    /**
+     * 
+     * @return int
+     */
+    private function getSecondsPerHour() {
+        return self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
+    }
+    
+    
+    
+    /**
+     * 
+     * @return int
+     */
+    private function getSecondsPerDay() {
+        return $this->getSecondsPerHour() * self::HOURS_PER_DAY;
+    }
+    
+    
+    /**
+     * 
+     * @return int
+     */
+    private function getSecondsPerMonth() {
+        return $this->getSecondsPerDay() * self::DAYS_PER_MONTH;
+    }
+    
+    
+    /**
+     * 
+     * @return int
+     */
+    private function getSecondsPerYear() {
+        return $this->getSecondsPerMonth() * self::MONTHS_PER_YEAR;
     }
 
 }
