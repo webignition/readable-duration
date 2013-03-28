@@ -87,4 +87,30 @@ class GetInMostAppropriateUnitsTestWithPrecisionTwo extends BaseTest {
             )            
         ), $readableDuration->getInMostAppropriateUnits(2));      
     }   
+    
+    
+    public function test7200SecondsReturns2HoursWithPrecision2() {
+        $readableDuration = new ReadableDuration();
+        $readableDuration->setValueInSeconds(7200);
+        
+        $this->assertEquals(array(
+            array(
+                'unit' => 'hour',
+                'value' => 2
+            )            
+        ), $readableDuration->getInMostAppropriateUnits(2));      
+    }  
+    
+    
+    public function test7199SecondsReturns2HoursWithPrecision2000() {
+        $readableDuration = new ReadableDuration();
+        $readableDuration->setValueInSeconds(7199);
+        
+        $this->assertEquals(array(
+            array(
+                'unit' => 'hour',
+                'value' => 2
+            )            
+        ), $readableDuration->getInMostAppropriateUnits(2));      
+    }      
 }

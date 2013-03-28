@@ -28,6 +28,15 @@ class ReadableDuration {
     const INTERVAL_SECOND_KEY = 's';
     
     
+    private $unitThresholds = array(
+        self::UNIT_MONTH => self::MONTHS_PER_YEAR,
+        self::UNIT_DAY => self::DAYS_PER_MONTH,
+        self::UNIT_HOUR => self::HOURS_PER_DAY,
+        self::UNIT_MINUTE => self::MINUTES_PER_HOUR,
+        self::UNIT_SECOND => self::SECONDS_PER_MINUTE
+    );
+    
+    
     /**
      *
      * @var int
@@ -314,7 +323,7 @@ class ReadableDuration {
         
         if ($seconds <= 29) {
             return $minutes;
-        }
+        }        
         
         return $minutes + 1;
     }
@@ -394,12 +403,15 @@ class ReadableDuration {
                     $methodName = 'getSeconds';
                 } else {
                     $methodName = 'getRounded'.ucwords($this->getLargestIntervalUnit()).'s';                
-                }               
+                }
                 
-                $values[] = array(
-                    'unit' => $this->getLargestIntervalUnit(),
-                    'value' => $this->$methodName()
-                );                
+                if ($this->$methodName() !== 0) {
+                    $values[] = array(
+                        'unit' => $this->getLargestIntervalUnit(),
+                        'value' => $this->$methodName()
+                    );                     
+                }               
+               
             } else {
                 $values[] = array(
                     'unit' => $this->getLargestIntervalUnit(),
@@ -412,7 +424,31 @@ class ReadableDuration {
         
         $this->interval = null;
         
-        return $values;
+        return $this->roundUpUnitValues($values);
+    }
+    
+    
+    private function roundUpUnitValues($unitValues) {
+        $roundUpNextUnitValue = false;
+        
+        for ($unitValueIndex = count($unitValues) - 1; $unitValueIndex >= 0; $unitValueIndex--) {
+            $unitValue = $unitValues[$unitValueIndex];
+            
+            if ($roundUpNextUnitValue) {
+                $unitValue['value'] += 1;
+                $unitValues[$unitValueIndex] = $unitValue;
+                $roundUpNextUnitValue = false;
+            }
+            
+            if (isset($this->unitsToIntervalUnits[$unitValue['unit']])) {                
+                if ($unitValue['value'] == $this->unitThresholds[$unitValue['unit']]) {
+                    $roundUpNextUnitValue = true;
+                    unset($unitValues[$unitValueIndex]);
+                }
+            }            
+        }
+        
+        return $unitValues;
     }
     
     
@@ -431,7 +467,7 @@ class ReadableDuration {
             }
         }
         
-        return null;        
+        return 'second';        
     }  
     
 
