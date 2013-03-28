@@ -2,7 +2,7 @@
 
 use webignition\ReadableDuration\ReadableDuration;
 
-class GetInMostAppropriateUnitsTest extends BaseTest {     
+class GetInMostAppropriateUnitsTestWithSinglePrecision extends BaseTest {     
     
     public function testOneSecond() {
         $readableDuration = new ReadableDuration();
@@ -76,7 +76,6 @@ class GetInMostAppropriateUnitsTest extends BaseTest {
             'units' => 'minute'
         ), $readableDuration->getInMostAppropriateUnits());         
     }
-
     
     public function test4000SecondsReturns1Hour() {
         $readableDuration = new ReadableDuration();
@@ -86,5 +85,5 @@ class GetInMostAppropriateUnitsTest extends BaseTest {
             'value' => 1,
             'units' => 'hour'
         ), $readableDuration->getInMostAppropriateUnits());         
-    }    
+    } 
 }
