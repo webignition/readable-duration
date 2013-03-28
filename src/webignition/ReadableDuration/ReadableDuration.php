@@ -40,38 +40,7 @@ class ReadableDuration {
      * @var \DateInterval
      */
     private $interval = null;
-    
-    
-    /**
-     *
-     * @var boolean 
-     */
-    private $isFuture = true;   
-    
-    
-    /**
-     *
-     * @var array
-     */
-    private $units = array(
-        self::UNIT_YEAR,
-        self::UNIT_MONTH,
-        self::UNIT_DAY,
-        self::UNIT_HOUR,
-        self::UNIT_MINUTE,
-        self::UNIT_SECOND
-    ); 
-    
-    
-    private $intervalUnits = array(
-        self::INTERVAL_YEAR_KEY,
-        self::INTERVAL_MONTH_KEY,
-        self::INTERVAL_DAY_KEY,
-        self::INTERVAL_HOUR_KEY,
-        self::INTERVAL_MINUTE_KEY,
-        self::INTERVAL_SECOND_KEY     
-    );
-    
+
     
     private $unitsToIntervalUnits = array(
         self::UNIT_YEAR => self::INTERVAL_YEAR_KEY,
@@ -81,6 +50,20 @@ class ReadableDuration {
         self::UNIT_MINUTE => self::INTERVAL_MINUTE_KEY,
         self::UNIT_SECOND  => self::INTERVAL_SECOND_KEY,
     );
+    
+    
+    /**
+     *
+     * @var \DateTime
+     */
+    private $currentTime = null;
+    
+    
+    /**
+     *
+     * @var \DateTime
+     */
+    private $comparatorTime = null;
     
     
     /**
@@ -106,18 +89,28 @@ class ReadableDuration {
         
         $this->valueInSeconds = $valueInSeconds;
         
-        $currentTime = new \DateTime();
+        $this->currentTime = new \DateTime();
         
         if ($this->valueInSeconds === 0) {
-            $comparatorTime = $currentTime;
+            $this->comparatorTime = clone $this->currentTime;
         } else {
-            $comparatorTime = new \DateTime('+'.$this->valueInSeconds.' second');
-        }
-        
-        $this->isFuture = $currentTime <= $comparatorTime;        
-        $this->interval = $currentTime->diff($comparatorTime);
+            $this->comparatorTime = new \DateTime('+'.$this->valueInSeconds.' second');
+        }      
         
         return $this;
+    }
+    
+    
+    /**
+     * 
+     * @return \DateInterval
+     */
+    private function getInterval() {
+        if (is_null($this->interval)) {
+            $this->interval = $this->currentTime->diff($this->comparatorTime);
+        }
+        
+        return $this->interval;
     }
     
     
@@ -130,7 +123,7 @@ class ReadableDuration {
             return false;
         }
         
-        return $this->interval->invert === 0;
+        return $this->getInterval()->invert === 0;
     }
     
     
@@ -152,7 +145,7 @@ class ReadableDuration {
             return false;
         }
         
-        return $this->interval->invert === 1;        
+        return $this->getInterval()->invert === 1;        
     }
     
     
@@ -161,7 +154,7 @@ class ReadableDuration {
      * @return int
      */
     public function getYears() {        
-        return $this->interval->{self::INTERVAL_YEAR_KEY};
+        return $this->getInterval()->{self::INTERVAL_YEAR_KEY};
     }
     
     
@@ -185,7 +178,7 @@ class ReadableDuration {
      * 
      * @return double
      */
-    public function getInYears() {        
+    public function getInYears() {
         return (int)round($this->getInSeconds() / $this->getSecondsPerYear());
     }
     
@@ -195,7 +188,7 @@ class ReadableDuration {
      * @return int
      */
     public function getMonths() {
-        return $this->interval->{self::INTERVAL_MONTH_KEY};
+        return $this->getInterval()->{self::INTERVAL_MONTH_KEY};
     }
     
     
@@ -230,7 +223,7 @@ class ReadableDuration {
      * @return int
      */    
     public function getDays() {
-        return $this->interval->{self::INTERVAL_DAY_KEY};
+        return $this->getInterval()->{self::INTERVAL_DAY_KEY};
     }
     
     
@@ -264,7 +257,7 @@ class ReadableDuration {
      * @return int
      */    
     public function getHours() {
-        return $this->interval->{self::INTERVAL_HOUR_KEY};       
+        return $this->getInterval()->{self::INTERVAL_HOUR_KEY};       
     }
     
 
@@ -298,7 +291,7 @@ class ReadableDuration {
      * @return int
      */    
     public function getMinutes() {        
-        return $this->interval->{self::INTERVAL_MINUTE_KEY};        
+        return $this->getInterval()->{self::INTERVAL_MINUTE_KEY};        
     }
     
     
@@ -332,7 +325,7 @@ class ReadableDuration {
      * @return int
      */    
     public function getSeconds() {
-        return $this->interval->{self::INTERVAL_SECOND_KEY};
+        return $this->getInterval()->{self::INTERVAL_SECOND_KEY};
     }
     
     
@@ -391,9 +384,7 @@ class ReadableDuration {
 
         if ($precision > self::MAX_APPROPRIATE_UNITS_PRECISION) {
             $precision = self::MAX_APPROPRIATE_UNITS_PRECISION;
-        }
-        
-        $currentInterval = clone $this->interval;
+        }      
         
         $values = array();
         
@@ -412,20 +403,20 @@ class ReadableDuration {
             } else {
                 $values[] = array(
                     'unit' => $this->getLargestIntervalUnit(),
-                    'value' => $this->interval->{$this->unitsToIntervalUnits[$this->getLargestIntervalUnit()]}
+                    'value' => $this->getInterval()->{$this->unitsToIntervalUnits[$this->getLargestIntervalUnit()]}
                 );                
             }
             
-            $this->interval->{$this->unitsToIntervalUnits[$this->getLargestIntervalUnit()]} = 0;
+            $this->getInterval()->{$this->unitsToIntervalUnits[$this->getLargestIntervalUnit()]} = 0;
         }
         
-        $this->interval = clone $currentInterval;
+        $this->interval = null;
         
         return $values;
     }
     
     
-    private function getLargestIntervalUnit() {
+    private function getLargestIntervalUnit() {        
         $intervalUnits = array(
             'y' => 'year',
             'm' => 'month',
@@ -435,7 +426,7 @@ class ReadableDuration {
             's' => 'second'
         );        
         foreach ($intervalUnits as $intervalUnitKey => $unit) {
-            if ($this->interval->$intervalUnitKey !== 0) {
+            if ($this->getInterval()->$intervalUnitKey !== 0) {
                 return $unit;
             }
         }
