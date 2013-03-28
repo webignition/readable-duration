@@ -247,5 +247,29 @@ class ReadableDuration {
     private function getSecondsPerYear() {
         return $this->getSecondsPerDay() * self::DAYS_PER_YEAR;
     }
+    
+    
+    public function getInMostAppropriateUnits() {
+        $units = array(
+            'year',
+            'month',
+            'day',
+            'hour',
+            'minute',
+            'second'
+        );
+        
+        foreach ($units as $unit) {
+            $methodName = 'getIn'.ucwords($unit).'s';
+            if ($this->$methodName() !== 0) {
+                return array(
+                    'value' => $this->$methodName(),
+                    'units' => $unit
+                );
+            }
+        }
+        
+        return null;
+    }
 
 }
