@@ -125,23 +125,21 @@ class ReadableDuration {
      * 
      * @return boolean
      */
-    public function isFuture() {
+    public function isFuture() {        
         if ($this->isPresent()) {
             return false;
         }
         
-        return $this->isFuture;
+        return $this->interval->invert === 0;
     }
     
     
+    /**
+     * 
+     * @return boolean
+     */
     public function isPresent() {        
-        foreach ($this->interval as $key => $value) {            
-            if ($value !== 0) {
-                return false;
-            }
-        }
-        
-        return true;
+        return $this->getInSeconds() === 0;
     }
     
     
@@ -150,7 +148,11 @@ class ReadableDuration {
      * @return boolean
      */
     public function isPast() {
-        return !$this->isFuture() && $this->isPresent();
+        if ($this->isPresent()) {
+            return false;
+        }
+        
+        return $this->interval->invert === 1;        
     }
     
     
