@@ -77,7 +77,7 @@ class ReadableDuration {
     
     /**
      * 
-     * @param type $valueInSeconds
+     * @param int $valueInSeconds
      */
     public function __construct($valueInSeconds = null) {
         $this->setValueInSeconds($valueInSeconds);
@@ -86,7 +86,7 @@ class ReadableDuration {
     
     /**
      * 
-     * @param type $valueInSeconds
+     * @param int $valueInSeconds
      * @return \webignition\ReadableDuration\ReadableDuration
      */
     public function setValueInSeconds($valueInSeconds) {
