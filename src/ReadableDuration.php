@@ -388,7 +388,7 @@ class ReadableDuration
             $this->interval->{$this->unitsToIntervalUnits[$this->getLargestIntervalUnit()]} = 0;
         }
 
-        $this->interval = null;
+        $this->interval = $this->currentTime->diff($this->comparatorTime);
 
         $valueCount = count($values);
 
