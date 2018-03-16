@@ -82,11 +82,35 @@ class ReadableDuration
     private $comparatorTime = null;
 
     /**
+     * @var float|int
+     */
+    private $secondsPerHour = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
+
+    /**
+     * @var float|int
+     */
+    private $secondsPerDay;
+
+    /**
+     * @var float|int
+     */
+    private $secondsPerMonth;
+
+    /**
+     * @var float|int
+     */
+    private $secondsPerYear;
+
+    /**
      * @param int $valueInSeconds
      */
     public function __construct($valueInSeconds = null)
     {
         $this->setValueInSeconds($valueInSeconds);
+
+        $this->secondsPerDay = $this->secondsPerHour * self::HOURS_PER_DAY;
+        $this->secondsPerMonth = $this->secondsPerDay * (self::DAYS_PER_YEAR / self::MONTHS_PER_YEAR);
+        $this->secondsPerYear = $this->secondsPerDay * self::DAYS_PER_YEAR;
     }
 
     /**
@@ -177,7 +201,7 @@ class ReadableDuration
      */
     public function getInYears()
     {
-        return (int)round($this->getInSeconds() / $this->getSecondsPerYear());
+        return (int)round($this->getInSeconds() / $this->secondsPerYear);
     }
 
     /**
@@ -209,7 +233,7 @@ class ReadableDuration
      */
     public function getInMonths()
     {
-        return (int)round($this->getInSeconds() / $this->getSecondsPerMonth());
+        return (int)round($this->getInSeconds() / $this->secondsPerMonth);
     }
 
     /**
@@ -240,7 +264,7 @@ class ReadableDuration
      */
     public function getInDays()
     {
-        return (int)round($this->getInSeconds() / $this->getSecondsPerDay());
+        return (int)round($this->getInSeconds() / $this->secondsPerDay);
     }
 
     /**
@@ -271,7 +295,7 @@ class ReadableDuration
      */
     public function getInHours()
     {
-        return (int)round($this->getInSeconds() / $this->getSecondsPerHour());
+        return (int)round($this->getInSeconds() / $this->secondsPerHour);
     }
 
     /**
@@ -319,38 +343,6 @@ class ReadableDuration
     public function getInSeconds()
     {
         return $this->valueInSeconds;
-    }
-
-    /**
-     * @return int
-     */
-    private function getSecondsPerHour()
-    {
-        return self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
-    }
-
-    /**
-     * @return int
-     */
-    private function getSecondsPerDay()
-    {
-        return $this->getSecondsPerHour() * self::HOURS_PER_DAY;
-    }
-
-    /**
-     * @return int
-     */
-    private function getSecondsPerMonth()
-    {
-        return $this->getSecondsPerDay() * (self::DAYS_PER_YEAR / self::MONTHS_PER_YEAR);
-    }
-
-    /**
-     * @return int
-     */
-    private function getSecondsPerYear()
-    {
-        return $this->getSecondsPerDay() * self::DAYS_PER_YEAR;
     }
 
     /**
