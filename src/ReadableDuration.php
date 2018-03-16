@@ -61,6 +61,17 @@ class ReadableDuration
     );
 
     /**
+     * @var array
+     */
+    private $unitIncremement = [
+        self::UNIT_SECOND => self::UNIT_MINUTE,
+        self::UNIT_MINUTE => self::UNIT_HOUR,
+        self::UNIT_HOUR => self::UNIT_DAY,
+        self::UNIT_DAY => self::UNIT_MONTH,
+        self::UNIT_MONTH => self::UNIT_YEAR,
+    ];
+
+    /**
      * @var \DateTime
      */
     private $currentTime = null;
@@ -172,7 +183,7 @@ class ReadableDuration
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getInYears()
     {
@@ -397,7 +408,13 @@ class ReadableDuration
 
         $this->interval = null;
 
-        return $this->roundUpUnitValues($values);
+        $valueCount = count($values);
+
+        if (1 === $valueCount) {
+            $values = $this->roundUpUnitValues($values);
+        }
+
+        return $values;
     }
 
     /**
@@ -407,26 +424,35 @@ class ReadableDuration
      */
     private function roundUpUnitValues($unitValues)
     {
-        $roundUpNextUnitValue = false;
+        $unitValue = $unitValues[0];
+        $currentUnit = $unitValue['unit'];
+        $currentValue = $unitValue['value'];
 
-        for ($unitValueIndex = count($unitValues) - 1; $unitValueIndex >= 0; $unitValueIndex--) {
-            $unitValue = $unitValues[$unitValueIndex];
+        if (self::UNIT_YEAR === $currentUnit) {
+            return $unitValues;
+        }
 
-            if ($roundUpNextUnitValue) {
-                $unitValue['value'] += 1;
-                $unitValues[$unitValueIndex] = $unitValue;
-                $roundUpNextUnitValue = false;
-            }
-
-            if (isset($this->unitsToIntervalUnits[$unitValue['unit']])) {
-                if ($unitValue['value'] == $this->unitThresholds[$unitValue['unit']]) {
-                    $roundUpNextUnitValue = true;
-                    unset($unitValues[$unitValueIndex]);
-                }
-            }
+        if ($this->isApproachingThreshold($currentValue, $currentUnit)) {
+            return [
+                [
+                    'unit' => $this->unitIncremement[$currentUnit],
+                    'value' => 1,
+                ],
+            ];
         }
 
         return $unitValues;
+    }
+
+    /**
+     * @param float|int $value
+     * @param string $unit
+     *
+     * @return bool
+     */
+    private function isApproachingThreshold($value, $unit)
+    {
+        return round($value) == round($this->unitThresholds[$unit]);
     }
 
     /**
