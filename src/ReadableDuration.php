@@ -4,18 +4,6 @@ namespace webignition\ReadableDuration;
 
 class ReadableDuration
 {
-    const SECONDS_PER_MINUTE = 60;
-    const MINUTES_PER_HOUR = 60;
-    const HOURS_PER_DAY = 24;
-    const DAYS_PER_MONTH = 30; // approximate!
-    const MONTHS_PER_YEAR = 12;
-    const DAYS_PER_YEAR = 365; // approximate!
-
-    const SECONDS_PER_DAY = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR * self::HOURS_PER_DAY;
-    const SECONDS_PER_HOUR = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
-    const SECONDS_PER_MONTH = self::SECONDS_PER_DAY * self::DAYS_PER_MONTH;
-    const SECONDS_PER_YEAR = self::SECONDS_PER_DAY * self::DAYS_PER_YEAR;
-
     const MAX_APPROPRIATE_UNITS_PRECISION = 6;
 
     const UNIT_YEAR = 'year';
@@ -36,11 +24,11 @@ class ReadableDuration
      * @var array
      */
     private $unitThresholds = [
-        self::UNIT_MONTH => self::MONTHS_PER_YEAR,
-        self::UNIT_DAY => self::DAYS_PER_MONTH,
-        self::UNIT_HOUR => self::HOURS_PER_DAY,
-        self::UNIT_MINUTE => self::MINUTES_PER_HOUR,
-        self::UNIT_SECOND => self::SECONDS_PER_MINUTE
+        self::UNIT_MONTH => Durations::MONTHS_PER_YEAR,
+        self::UNIT_DAY => Durations::DAYS_PER_MONTH,
+        self::UNIT_HOUR => Durations::HOURS_PER_DAY,
+        self::UNIT_MINUTE => Durations::MINUTES_PER_HOUR,
+        self::UNIT_SECOND => Durations::SECONDS_PER_MINUTE
     ];
 
     /**
@@ -155,7 +143,7 @@ class ReadableDuration
 
     public function getInYears(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_YEAR);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_YEAR);
     }
 
     public function getMonths(): int
@@ -177,7 +165,7 @@ class ReadableDuration
 
     public function getInMonths(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_MONTH);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_MONTH);
     }
 
     public function getDays(): int
@@ -199,7 +187,7 @@ class ReadableDuration
 
     public function getInDays(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_DAY);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_DAY);
     }
 
     public function getHours(): int
@@ -221,7 +209,7 @@ class ReadableDuration
 
     public function getInHours(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_HOUR);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_HOUR);
     }
 
     public function getMinutes(): int
@@ -231,7 +219,7 @@ class ReadableDuration
 
     public function getInMinutes(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_MINUTE);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_MINUTE);
     }
 
     public function getRoundedMinutes(): int
