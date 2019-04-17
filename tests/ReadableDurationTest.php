@@ -83,36 +83,36 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     public function getYearsDataProvider(): array
     {
-        $oneYearInSeconds = 366 * 86400;
-        $twoYearsInSeconds = $oneYearInSeconds * 2;
+        $aboutOneYearInSeconds = ReadableDuration::SECONDS_PER_YEAR + ReadableDuration::SECONDS_PER_DAY;
+        $aboutTwoYearsInSeconds = $aboutOneYearInSeconds * 2;
 
         return [
             'zero seconds is zero years' => [
                 'valueInSeconds' => 0,
                 'expectedYears' => 0,
             ],
-            '3600 seconds is zero years' => [
-                'valueInSeconds' => 3600,
+            'one hour is zero years' => [
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
-            '-3600 seconds is zero years' => [
-                'valueInSeconds' => -3600,
+            '-one hour is zero years' => [
+                'valueInSeconds' => -ReadableDuration::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
-            '+1 year in seconds is one year' => [
-                'valueInSeconds' => $oneYearInSeconds,
+            '~1 year in seconds is one year' => [
+                'valueInSeconds' =>$aboutOneYearInSeconds,
                 'expectedYears' => 1,
             ],
-            '-1 year in seconds is one year' => [
-                'valueInSeconds' => ($oneYearInSeconds * -1),
+            '~-1 year in seconds is one year' => [
+                'valueInSeconds' => ($aboutOneYearInSeconds * -1),
                 'expectedYears' => 1,
             ],
-            '+2 years in seconds is two years' => [
-                'valueInSeconds' => $twoYearsInSeconds,
+            '~2 years in seconds is two years' => [
+                'valueInSeconds' => $aboutTwoYearsInSeconds,
                 'expectedYears' => 2,
             ],
-            '-2 years in seconds is two years' => [
-                'valueInSeconds' => ($twoYearsInSeconds + 1 * -1),
+            '~-2 years in seconds is two years' => [
+                'valueInSeconds' => ($aboutTwoYearsInSeconds * -1),
                 'expectedYears' => 2,
             ],
         ];
@@ -130,9 +130,9 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     public function getRoundedYearsDataProvider(): array
     {
-        $oneYearInSeconds = 366 * 86400;
-        $sixMonthsInSeconds = $oneYearInSeconds / 2;
-        $twoYearsInSeconds = $oneYearInSeconds * 2;
+        $aboutOneYearInSeconds = ReadableDuration::SECONDS_PER_YEAR + ReadableDuration::SECONDS_PER_DAY;
+        $sixMonthsInSeconds = $aboutOneYearInSeconds / 2;
+        $twoYearsInSeconds = $aboutOneYearInSeconds * 2;
 
         return [
             'zero seconds is zero years' => [
@@ -140,11 +140,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedRoundedYears' => 0,
             ],
             '3600 seconds is zero years' => [
-                'valueInSeconds' => 3600,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
                 'expectedRoundedYears' => 0,
             ],
             '-3600 seconds is zero years' => [
-                'valueInSeconds' => -3600,
+                'valueInSeconds' => -ReadableDuration::SECONDS_PER_HOUR,
                 'expectedRoundedYears' => 0,
             ],
             '6 months in seconds is zero years' => [
@@ -164,7 +164,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedRoundedYears' => 1,
             ],
             '+1 year in seconds is one year' => [
-                'valueInSeconds' => $oneYearInSeconds,
+                'valueInSeconds' => $aboutOneYearInSeconds,
                 'expectedRoundedYears' => 1,
             ],
             '+2 years in seconds is two years' => [
@@ -186,21 +186,21 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     public function getInYearsDataProvider(): array
     {
-        $oneYearInSeconds = 366 * 86400;
-        $sixMonthsInSeconds = $oneYearInSeconds / 2;
-        $twoYearsInSeconds = $oneYearInSeconds * 2;
+        $aboutOneYearInSeconds = ReadableDuration::SECONDS_PER_YEAR + ReadableDuration::SECONDS_PER_DAY;
+        $sixMonthsInSeconds = $aboutOneYearInSeconds / 2;
+        $twoYearsInSeconds = $aboutOneYearInSeconds * 2;
 
         return [
             'zero seconds is zero years' => [
                 'valueInSeconds' => 0,
                 'expectedYears' => 0,
             ],
-            '3600 seconds is zero years' => [
-                'valueInSeconds' => 3600,
+            'one hour is zero years' => [
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
-            '-3600 seconds is zero years' => [
-                'valueInSeconds' => -3600,
+            '-one hour is zero years' => [
+                'valueInSeconds' => -ReadableDuration::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
             '6 months in seconds is one year' => [
@@ -220,7 +220,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedYears' => -1,
             ],
             '+1 year in seconds is one year' => [
-                'valueInSeconds' => $oneYearInSeconds,
+                'valueInSeconds' => $aboutOneYearInSeconds,
                 'expectedYears' => 1,
             ],
             '+2 years in seconds is two years' => [
@@ -242,7 +242,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     public function getMonthsDataProvider(): array
     {
-        $oneMonthInSeconds = 86400 * 31;
+        $aboutOneMonthInSeconds = ReadableDuration::SECONDS_PER_MONTH + ReadableDuration::SECONDS_PER_DAY;
 
         return [
             'zero seconds is zero months' => [
@@ -250,19 +250,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedMonths' => 0,
             ],
             '1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds,
+                'valueInSeconds' => $aboutOneMonthInSeconds,
                 'expectedMonths' => 1,
             ],
             '-1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds * -1,
+                'valueInSeconds' => $aboutOneMonthInSeconds * -1,
                 'expectedMonths' => 1,
             ],
             '2 months in seconds is 2 months' => [
-                'valueInSeconds' => ($oneMonthInSeconds * 2),
+                'valueInSeconds' => $aboutOneMonthInSeconds * 2,
                 'expectedMonths' => 2,
             ],
             '-2 months in seconds is -2 months' => [
-                'valueInSeconds' => $oneMonthInSeconds * 2 * -1,
+                'valueInSeconds' => $aboutOneMonthInSeconds * 2 * -1,
                 'expectedMonths' => 2,
             ],
         ];
