@@ -3,72 +3,31 @@
 
 namespace webignition\Tests\ReadableDuration;
 
+use webignition\ReadableDuration\Durations;
+use webignition\ReadableDuration\Factory;
 use webignition\ReadableDuration\ReadableDuration;
 
-class ReadableDurationTest extends AbstractReadableDurationTest
+class ReadableDurationTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider setValueInSecondsGetInSecondsDataProvider
-     */
-    public function testSetValueInSecondsGetInSeconds(int $valueInSeconds, int $expectedSeconds)
+    public function testIsPast()
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedSeconds, $this->readableDuration->getInSeconds());
+        $this->assertTrue($this->create(-1)->isPast());
+        $this->assertFalse($this->create(0)->isPast());
+        $this->assertFalse($this->create(1)->isPast());
     }
 
-    public function setValueInSecondsGetInSecondsDataProvider(): array
+    public function testIsPresent()
     {
-        return [
-            'negative' => [
-                'valueInSeconds' => -1,
-                'expectedSeconds' => -1,
-            ],
-            'positive' => [
-                'valueInSeconds' => 1,
-                'expectedSeconds' => 1,
-            ],
-        ];
+        $this->assertFalse($this->create(-1)->isPresent());
+        $this->assertTrue($this->create(0)->isPresent());
+        $this->assertFalse($this->create(1)->isPresent());
     }
 
-    /**
-     * @dataProvider isPastIsPresntIsFutureDataProvider
-     */
-    public function testIsPastIsPresentIsFuture(
-        int $valueInSeconds,
-        bool $expectedIsPast,
-        bool $expectedIsPresent,
-        bool $expectedIsFuture
-    ) {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedIsPast, $this->readableDuration->isPast());
-        $this->assertEquals($expectedIsPresent, $this->readableDuration->isPresent());
-        $this->assertEquals($expectedIsFuture, $this->readableDuration->isFuture());
-    }
-
-    public function isPastIsPresntIsFutureDataProvider(): array
+    public function testIsFuture()
     {
-        return [
-            'now' => [
-                'valueInSeconds' => 0,
-                'expectedIsPast' => false,
-                'expectedIsPresent' => true,
-                'expectedIsFuture' => false,
-            ],
-            'past' => [
-                'valueInSeconds' => -1,
-                'expectedIsPast' => true,
-                'expectedIsPresent' => false,
-                'expectedIsFuture' => false,
-            ],
-            'future' => [
-                'valueInSeconds' => 1,
-                'expectedIsPast' => false,
-                'expectedIsPresent' => false,
-                'expectedIsFuture' => true,
-            ],
-        ];
+        $this->assertFalse($this->create(-1)->isFuture());
+        $this->assertFalse($this->create(0)->isFuture());
+        $this->assertTrue($this->create(1)->isFuture());
     }
 
     /**
@@ -76,43 +35,41 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetYears(int $valueInSeconds, int $expectedYears)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedYears, $this->readableDuration->getYears());
+        $this->assertEquals($expectedYears, $this->create($valueInSeconds)->getYears());
     }
 
     public function getYearsDataProvider(): array
     {
-        $oneYearInSeconds = 366 * 86400;
-        $twoYearsInSeconds = $oneYearInSeconds * 2;
+        $aboutOneYearInSeconds = Durations::SECONDS_PER_YEAR + Durations::SECONDS_PER_DAY;
+        $aboutTwoYearsInSeconds = $aboutOneYearInSeconds * 2;
 
         return [
             'zero seconds is zero years' => [
                 'valueInSeconds' => 0,
                 'expectedYears' => 0,
             ],
-            '3600 seconds is zero years' => [
-                'valueInSeconds' => 3600,
+            '1 hour is zero years' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
-            '-3600 seconds is zero years' => [
-                'valueInSeconds' => -3600,
+            '-1 hour is zero years' => [
+                'valueInSeconds' => -Durations::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
-            '+1 year in seconds is one year' => [
-                'valueInSeconds' => $oneYearInSeconds,
+            '~1 year is one year' => [
+                'valueInSeconds' => $aboutOneYearInSeconds,
                 'expectedYears' => 1,
             ],
-            '-1 year in seconds is one year' => [
-                'valueInSeconds' => ($oneYearInSeconds * -1),
+            '~ -1 year is one year' => [
+                'valueInSeconds' => ($aboutOneYearInSeconds * -1),
                 'expectedYears' => 1,
             ],
-            '+2 years in seconds is two years' => [
-                'valueInSeconds' => $twoYearsInSeconds,
+            '~2 years is two years' => [
+                'valueInSeconds' => $aboutTwoYearsInSeconds,
                 'expectedYears' => 2,
             ],
-            '-2 years in seconds is two years' => [
-                'valueInSeconds' => ($twoYearsInSeconds + 1 * -1),
+            '~ -2 two years is two years' => [
+                'valueInSeconds' => ($aboutTwoYearsInSeconds * -1),
                 'expectedYears' => 2,
             ],
         ];
@@ -123,52 +80,49 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetRoundedYears(int $valueInSeconds, int $expectedRoundedYears)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedRoundedYears, $this->readableDuration->getRoundedYears());
+        $this->assertEquals($expectedRoundedYears, $this->create($valueInSeconds)->getRoundedYears());
     }
 
     public function getRoundedYearsDataProvider(): array
     {
-        $oneYearInSeconds = 366 * 86400;
-        $sixMonthsInSeconds = $oneYearInSeconds / 2;
-        $twoYearsInSeconds = $oneYearInSeconds * 2;
+        $aboutOneYearInSeconds = Durations::SECONDS_PER_YEAR + Durations::SECONDS_PER_DAY;
+        $sixMonthsInSeconds = $aboutOneYearInSeconds / 2;
 
         return [
             'zero seconds is zero years' => [
                 'valueInSeconds' => 0,
                 'expectedRoundedYears' => 0,
             ],
-            '3600 seconds is zero years' => [
-                'valueInSeconds' => 3600,
+            '1 hour is zero years' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedRoundedYears' => 0,
             ],
-            '-3600 seconds is zero years' => [
-                'valueInSeconds' => -3600,
+            '-1 hour is zero years' => [
+                'valueInSeconds' => -Durations::SECONDS_PER_HOUR,
                 'expectedRoundedYears' => 0,
             ],
-            '6 months in seconds is zero years' => [
+            '6 months is zero years' => [
                 'valueInSeconds' => $sixMonthsInSeconds,
                 'expectedRoundedYears' => 0,
             ],
-            'more than 6 months in seconds is one year' => [
-                'valueInSeconds' => $sixMonthsInSeconds + ($sixMonthsInSeconds / 2),
+            '9 months is one year' => [
+                'valueInSeconds' => (int) ($sixMonthsInSeconds * 1.5),
                 'expectedRoundedYears' => 1,
             ],
-            '-6 months in seconds is zero years' => [
+            '-6 months is zero years' => [
                 'valueInSeconds' => $sixMonthsInSeconds * -1,
                 'expectedRoundedYears' => 0,
             ],
-            '-more than 6 months in seconds is one year' => [
-                'valueInSeconds' => (($sixMonthsInSeconds + ($sixMonthsInSeconds / 2)) * -1),
+            '-9 months in seconds is one year' => [
+                'valueInSeconds' => (int) ($sixMonthsInSeconds * 1.5 * -1),
                 'expectedRoundedYears' => 1,
             ],
-            '+1 year in seconds is one year' => [
-                'valueInSeconds' => $oneYearInSeconds,
+            '1 year is one year' => [
+                'valueInSeconds' => $aboutOneYearInSeconds,
                 'expectedRoundedYears' => 1,
             ],
-            '+2 years in seconds is two years' => [
-                'valueInSeconds' => $twoYearsInSeconds,
+            '2 years is two years' => [
+                'valueInSeconds' => $aboutOneYearInSeconds * 2,
                 'expectedRoundedYears' => 2,
             ],
         ];
@@ -179,51 +133,49 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetInYears(int $valueInSeconds, int $expectedYears)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedYears, $this->readableDuration->getInYears());
+        $this->assertEquals($expectedYears, $this->create($valueInSeconds)->getInYears());
     }
 
     public function getInYearsDataProvider(): array
     {
-        $oneYearInSeconds = 366 * 86400;
-        $sixMonthsInSeconds = $oneYearInSeconds / 2;
-        $twoYearsInSeconds = $oneYearInSeconds * 2;
+        $aboutOneYearInSeconds = Durations::SECONDS_PER_YEAR + Durations::SECONDS_PER_DAY;
+        $sixMonthsInSeconds = $aboutOneYearInSeconds / 2;
+        $twoYearsInSeconds = $aboutOneYearInSeconds * 2;
 
         return [
             'zero seconds is zero years' => [
                 'valueInSeconds' => 0,
                 'expectedYears' => 0,
             ],
-            '3600 seconds is zero years' => [
-                'valueInSeconds' => 3600,
+            '1 hour is zero years' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
-            '-3600 seconds is zero years' => [
-                'valueInSeconds' => -3600,
+            '-1 hour is zero years' => [
+                'valueInSeconds' => -Durations::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
-            '6 months in seconds is one year' => [
+            '6 months is one year' => [
                 'valueInSeconds' => $sixMonthsInSeconds,
                 'expectedYears' => 1
             ],
-            'more than 6 months in seconds is one year' => [
-                'valueInSeconds' => $sixMonthsInSeconds + ($sixMonthsInSeconds / 2),
+            '9 months is one year' => [
+                'valueInSeconds' => (int) ($sixMonthsInSeconds * 1.5),
                 'expectedYears' => 1,
             ],
-            '-6 months in seconds is -1 years' => [
+            '-6 months is -1 years' => [
                 'valueInSeconds' => $sixMonthsInSeconds * -1,
                 'expectedYears' => -1,
             ],
-            '-more than 6 months in seconds is -1 year' => [
+            '-more 9 months is -1 year' => [
                 'valueInSeconds' => (($sixMonthsInSeconds + ($sixMonthsInSeconds / 2)) * -1),
                 'expectedYears' => -1,
             ],
-            '+1 year in seconds is one year' => [
-                'valueInSeconds' => $oneYearInSeconds,
+            '1 year is one year' => [
+                'valueInSeconds' => $aboutOneYearInSeconds,
                 'expectedYears' => 1,
             ],
-            '+2 years in seconds is two years' => [
+            '2 years is two years' => [
                 'valueInSeconds' => $twoYearsInSeconds,
                 'expectedYears' => 2,
             ],
@@ -235,34 +187,32 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetMonths(int $valueInSeconds, int $expectedMonths)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedMonths, $this->readableDuration->getMonths());
+        $this->assertEquals($expectedMonths, $this->create($valueInSeconds)->getMonths());
     }
 
     public function getMonthsDataProvider(): array
     {
-        $oneMonthInSeconds = 86400 * 31;
+        $aboutOneMonthInSeconds = Durations::SECONDS_PER_MONTH + Durations::SECONDS_PER_DAY;
 
         return [
             'zero seconds is zero months' => [
                 'valueInSeconds' => 0,
                 'expectedMonths' => 0,
             ],
-            '1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds,
+            '1 month is 1 month' => [
+                'valueInSeconds' => $aboutOneMonthInSeconds,
                 'expectedMonths' => 1,
             ],
-            '-1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds * -1,
+            '-1 month is 1 month' => [
+                'valueInSeconds' => $aboutOneMonthInSeconds * -1,
                 'expectedMonths' => 1,
             ],
-            '2 months in seconds is 2 months' => [
-                'valueInSeconds' => ($oneMonthInSeconds * 2),
+            '2 months is 2 months' => [
+                'valueInSeconds' => $aboutOneMonthInSeconds * 2,
                 'expectedMonths' => 2,
             ],
-            '-2 months in seconds is -2 months' => [
-                'valueInSeconds' => $oneMonthInSeconds * 2 * -1,
+            '-2 months is -2 months' => [
+                'valueInSeconds' => $aboutOneMonthInSeconds * 2 * -1,
                 'expectedMonths' => 2,
             ],
         ];
@@ -273,9 +223,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetRoundedMonths(int $valueInSeconds, int $expectedRoundedMonths)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedRoundedMonths, $this->readableDuration->getRoundedMonths());
+        $this->assertEquals($expectedRoundedMonths, $this->create($valueInSeconds)->getRoundedMonths());
     }
 
     public function getRoundedMonthsDataProvider(): array
@@ -285,20 +233,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedRoundedMonths' => 0,
             ],
-            '0.8 month in seconds is 1 month' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MONTH * 0.8),
+            '0.8 months is 1 month' => [
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_MONTH * 0.8),
                 'expectedRoundedMonths' => 1,
             ],
-            '1 month in seconds is 1 month' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH,
+            '1 month is 1 month' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH,
                 'expectedRoundedMonths' => 1,
             ],
-            '1.1 month in seconds is 1 month' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MONTH * 1.1),
+            '1.1 months is 1 month' => [
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_MONTH * 1.1),
                 'expectedRoundedMonths' => 1,
             ],
-            '-1 month in seconds is 1 month' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * -1,
+            '-1 month is 1 month' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * -1,
                 'expectedRoundedMonths' => 1,
             ],
         ];
@@ -309,9 +257,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetInMonths(int $valueInSeconds, int $expectedInMonths)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedInMonths, $this->readableDuration->getInMonths());
+        $this->assertEquals($expectedInMonths, $this->create($valueInSeconds)->getInMonths());
     }
 
     public function getInMonthsDataProvider(): array
@@ -321,20 +267,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedInMonths' => 0,
             ],
-            '1 month in seconds is 1 month' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH,
+            '1 month is 1 month' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH,
                 'expectedInMonths' => 1,
             ],
-            '-1 month in seconds is 1 month' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * -1,
+            '-1 month is 1 month' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * -1,
                 'expectedInMonths' => -1,
             ],
-            '2 inMonths in seconds is 2 months' => [
-                'valueInSeconds' => (ReadableDuration::SECONDS_PER_MONTH * 2),
+            '2 months is 2 months' => [
+                'valueInSeconds' => (Durations::SECONDS_PER_MONTH * 2),
                 'expectedInMonths' => 2,
             ],
-            '-2 inMonths in seconds is 2 months' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * 2 * -1,
+            '-2 months is 2 months' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * 2 * -1,
                 'expectedInMonths' => -2,
             ],
         ];
@@ -345,9 +291,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetDays(int $valueInSeconds, int $expectedDays)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedDays, $this->readableDuration->getDays());
+        $this->assertEquals($expectedDays, $this->create($valueInSeconds)->getDays());
     }
 
     public function getDaysDataProvider(): array
@@ -357,20 +301,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedDays' => 0,
             ],
-            '1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
+            '1 day is 1 day' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY,
                 'expectedDays' => 1,
             ],
-            '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
+            '-1 day is 1 day' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * -1,
                 'expectedDays' => 1,
             ],
-            '2 days in seconds is 2 days' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2,
+            '2 days is 2 days' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * 2,
                 'expectedDays' => 2,
             ],
-            '-2 days in seconds is -2 days' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2 * -1,
+            '-2 days is -2 days' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * 2 * -1,
                 'expectedDays' => 2,
             ],
         ];
@@ -381,9 +325,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetRoundedDays(int $valueInSeconds, int $expectedRoundedDays)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedRoundedDays, $this->readableDuration->getRoundedDays());
+        $this->assertEquals($expectedRoundedDays, $this->create($valueInSeconds)->getRoundedDays());
     }
 
     public function getRoundedDaysDataProvider(): array
@@ -393,20 +335,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedRoundedDays' => 0,
             ],
-            '0.8 days in seconds is 1 day' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_DAY * 0.8),
+            '0.8 days is 1 day' => [
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_DAY * 0.8),
                 'expectedRoundedDays' => 1,
             ],
-            '1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
+            '1 day is 1 day' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY,
                 'expectedRoundedDays' => 1,
             ],
-            '1.1 day in seconds is 1 day' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_DAY * 1.1),
+            '1.1 days is 1 day' => [
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_DAY * 1.1),
                 'expectedRoundedDays' => 1,
             ],
-            '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
+            '-1 day is 1 day' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * -1,
                 'expectedRoundedDays' => 1,
             ],
         ];
@@ -417,9 +359,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetInDays(int $valueInSeconds, int $expectedInDays)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedInDays, $this->readableDuration->getInDays());
+        $this->assertEquals($expectedInDays, $this->create($valueInSeconds)->getInDays());
     }
 
     public function getInDaysDataProvider(): array
@@ -429,20 +369,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedInDays' => 0,
             ],
-            '1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
+            '1 day is 1 day' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY,
                 'expectedInDays' => 1,
             ],
-            '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
+            '-1 day is 1 day' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * -1,
                 'expectedInDays' => -1,
             ],
-            '2 days in seconds is 2 days' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2,
+            '2 days is 2 days' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * 2,
                 'expectedInDays' => 2,
             ],
-            '-2 days in seconds is -2 days' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2 * -1,
+            '-2 days is -2 days' => [
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * 2 * -1,
                 'expectedInDays' => -2,
             ],
         ];
@@ -453,9 +393,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetHours(int $valueInSeconds, int $expectedHours)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedHours, $this->readableDuration->getHours());
+        $this->assertEquals($expectedHours, $this->create($valueInSeconds)->getHours());
     }
 
     public function getHoursDataProvider(): array
@@ -465,20 +403,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedHours' => 0,
             ],
-            '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+            '1 hours is 1 hour' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedHours' => 1,
             ],
-            '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
+            '-1 hour is 1 hour' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * -1,
                 'expectedHours' => 1,
             ],
-            '2 hours in seconds is 2 hours' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2,
+            '2 hours is 2 hours' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * 2,
                 'expectedHours' => 2,
             ],
-            '-2 hours in seconds is -2 hours' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2 * -1,
+            '-2 hours is -2 hours' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * 2 * -1,
                 'expectedHours' => 2,
             ],
         ];
@@ -489,9 +427,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetRoundedHours(int $valueInSeconds, int $expectedRoundedHours)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedRoundedHours, $this->readableDuration->getRoundedHours());
+        $this->assertEquals($expectedRoundedHours, $this->create($valueInSeconds)->getRoundedHours());
     }
 
     public function getRoundedHoursDataProvider(): array
@@ -501,20 +437,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedRoundedHours' => 0,
             ],
-            '0.8 hours in seconds is 1 hour' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_HOUR * 0.8),
+            '0.8 hours is 1 hour' => [
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_HOUR * 0.8),
                 'expectedRoundedHours' => 1,
             ],
-            '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+            '1 hour  is 1 hour' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedRoundedHours' => 1,
             ],
-            '1.1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_HOUR * 1.1),
+            '1.1 hours is 1 hour' => [
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_HOUR * 1.1),
                 'expectedRoundedHours' => 1,
             ],
-            '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
+            '-1 hour is 1 hour' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * -1,
                 'expectedRoundedHours' => 1,
             ],
         ];
@@ -525,9 +461,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetInHours(int $valueInSeconds, int $expectedInHours)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedInHours, $this->readableDuration->getInHours());
+        $this->assertEquals($expectedInHours, $this->create($valueInSeconds)->getInHours());
     }
 
     public function getInHoursDataProvider(): array
@@ -537,20 +471,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedInHours' => 0,
             ],
-            '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+            '1 hour is 1 hour' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedInHours' => 1,
             ],
-            '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
+            '-1 hour is 1 hour' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * -1,
                 'expectedInHours' => -1,
             ],
-            '2 hours in seconds is 2 hours' => [
-                'valueInSeconds' => (ReadableDuration::SECONDS_PER_HOUR * 2),
+            '2 hours is 2 hours' => [
+                'valueInSeconds' => (Durations::SECONDS_PER_HOUR * 2),
                 'expectedInHours' => 2,
             ],
-            '-2 hours in seconds is -2 hours' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2 * -1,
+            '-2 hours is -2 hours' => [
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * 2 * -1,
                 'expectedInHours' => -2,
             ],
         ];
@@ -561,9 +495,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetMinutes(int $valueInSeconds, int $expectedMinutes)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedMinutes, $this->readableDuration->getMinutes());
+        $this->assertEquals($expectedMinutes, $this->create($valueInSeconds)->getMinutes());
     }
 
     public function getMinutesDataProvider(): array
@@ -573,20 +505,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedMinutes' => 0,
             ],
-            '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
+            '1 minute is 1 minute' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE,
                 'expectedMinutes' => 1,
             ],
-            '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
+            '-1 minute is 1 minute' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * -1,
                 'expectedMinutes' => 1,
             ],
-            '2 minutes in seconds is 2 minutes' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2,
+            '2 minutes is 2 minutes' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * 2,
                 'expectedMinutes' => 2,
             ],
-            '-2 minutes in seconds is -2 minutes' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2 * -1,
+            '-2 minutes is -2 minutes' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * 2 * -1,
                 'expectedMinutes' => 2,
             ],
         ];
@@ -597,9 +529,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetRoundedMinutes(int $valueInSeconds, int $expectedRoundedMinutes)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedRoundedMinutes, $this->readableDuration->getRoundedMinutes());
+        $this->assertEquals($expectedRoundedMinutes, $this->create($valueInSeconds)->getRoundedMinutes());
     }
 
     public function getRoundedMinutesDataProvider(): array
@@ -609,20 +539,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedRoundedMinutes' => 0,
             ],
-            '0.8 minutes in seconds is 1 minute' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MINUTE * 0.8),
+            '0.8 minutes is 1 minute' => [
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_MINUTE * 0.8),
                 'expectedRoundedMinutes' => 1,
             ],
-            '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
+            '1 minute is 1 minute' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE,
                 'expectedRoundedMinutes' => 1,
             ],
-            '1.1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MINUTE * 1.1),
+            '1.1 minutes is 1 minute' => [
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_MINUTE * 1.1),
                 'expectedRoundedMinutes' => 1,
             ],
-            '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
+            '-1 minute is 1 minute' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * -1,
                 'expectedRoundedMinutes' => 1,
             ],
         ];
@@ -633,9 +563,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetInMinutes(int $valueInSeconds, int $expectedInMinutes)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedInMinutes, $this->readableDuration->getInMinutes());
+        $this->assertEquals($expectedInMinutes, $this->create($valueInSeconds)->getInMinutes());
     }
 
     public function getInMinutesDataProvider(): array
@@ -645,20 +573,20 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'valueInSeconds' => 0,
                 'expectedInMinutes' => 0,
             ],
-            '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
+            '1 minute is 1 minute' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE,
                 'expectedInMinutes' => 1,
             ],
-            '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
+            '-1 minute is 1 minute' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * -1,
                 'expectedInMinutes' => -1,
             ],
-            '2 minutes in seconds is 2 minutes' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2,
+            '2 minutes is 2 minutes' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * 2,
                 'expectedInMinutes' => 2,
             ],
-            '-2 minutes in seconds is -2 minutes' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2 * -1,
+            '-2 minutes is -2 minutes' => [
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * 2 * -1,
                 'expectedInMinutes' => -2,
             ],
         ];
@@ -669,9 +597,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
      */
     public function testGetSeconds(int $valueInSeconds, int $expectedSeconds)
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
-
-        $this->assertEquals($expectedSeconds, $this->readableDuration->getSeconds());
+        $this->assertEquals($expectedSeconds, $this->create($valueInSeconds)->getSeconds());
     }
 
     public function getSecondsDataProvider(): array
@@ -700,308 +626,10 @@ class ReadableDurationTest extends AbstractReadableDurationTest
         ];
     }
 
-    /**
-     * @dataProvider getInMostAppropriateUnitsDataProvider
-     */
-    public function testGetInMostAppropriateUnits(int $valueInSeconds, int $precision, array $expectedUnits)
+    private function create(int $valueInSeconds): ReadableDuration
     {
-        $this->readableDuration->setValueInSeconds($valueInSeconds);
+        $factory = new Factory();
 
-        $this->assertEquals($expectedUnits, $this->readableDuration->getInMostAppropriateUnits($precision));
-    }
-
-    public function getInMostAppropriateUnitsDataProvider(): array
-    {
-        return [
-            'zero, precision=1' => [
-                'valueInSeconds' => 0,
-                'precision' => 1,
-                'expectedUnits' => []
-            ],
-            'zero, precision=7 (really should not do this)' => [
-                'valueInSeconds' => 0,
-                'precision' => 7,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_SECOND,
-                        'value' => 0,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_SECOND,
-                        'value' => 0,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_SECOND,
-                        'value' => 0,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_SECOND,
-                        'value' => 0,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_SECOND,
-                        'value' => 0,
-                    ],
-                ]
-            ],
-            'one second, precision=1' => [
-                'valueInSeconds' => 1,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_SECOND,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            'one second, precision=2' => [
-                'valueInSeconds' => 1,
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_SECOND,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            'one minute, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MINUTE,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            'one minute, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MINUTE,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            '~one hour, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR - 1,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_HOUR,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            'one hour, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_HOUR,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            'one yearish, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            'one hour, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_HOUR,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            '~one month, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            'one month, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            'one month, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            '~nearly six months, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 6,
-                    ],
-                ]
-            ],
-            '~nearly six months, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 5,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_DAY,
-                        'value' => 27,
-                    ],
-                ]
-            ],
-            ' six months, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 6,
-                    ],
-                ]
-            ],
-            '~nearly one year, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR - 1,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            '~nearly one year, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR - 1,
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 11,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_DAY,
-                        'value' => 30,
-                    ],
-                ]
-            ],
-            '~one year, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            '~one year, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 11,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_DAY,
-                        'value' => 30,
-                    ],
-                ]
-            ],
-            '~one and a half years, precision=1' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 1.5),
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 1,
-                    ],
-                ]
-            ],
-            '~one and a half years, precision=2' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 1.5),
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 1,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 6,
-                    ],
-                ]
-            ],
-            '~3.4 years, precision=1' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
-                'precision' => 1,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 3,
-                    ],
-                ]
-            ],
-            '~3.4 years, precision=2' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
-                'precision' => 2,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 3,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 5,
-                    ],
-                ]
-            ],
-            '~3.4 years, precision=3' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
-                'precision' => 3,
-                'expectedUnits' => [
-                    [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 3,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_MONTH,
-                        'value' => 4,
-                    ],
-                    [
-                        'unit' => ReadableDuration::UNIT_DAY,
-                        'value' => 23,
-                    ],
-                ]
-            ],
-        ];
+        return $factory->create($valueInSeconds);
     }
 }
