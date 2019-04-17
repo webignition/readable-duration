@@ -13,8 +13,8 @@ class ReadableDuration
 
     const SECONDS_PER_DAY = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR * self::HOURS_PER_DAY;
     const SECONDS_PER_HOUR = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
-    const SECONDS_PER_YEAR = self::SECONDS_PER_DAY * self::DAYS_PER_YEAR;
     const SECONDS_PER_MONTH = self::SECONDS_PER_DAY * self::DAYS_PER_MONTH;
+    const SECONDS_PER_YEAR = self::SECONDS_PER_DAY * self::DAYS_PER_YEAR;
 
     const MAX_APPROPRIATE_UNITS_PRECISION = 6;
 
@@ -86,35 +86,11 @@ class ReadableDuration
      */
     private $comparatorTime = null;
 
-    /**
-     * @var float|int
-     */
-    private $secondsPerHour = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
-
-    /**
-     * @var float|int
-     */
-    private $secondsPerDay;
-
-    /**
-     * @var float|int
-     */
-    private $secondsPerMonth;
-
-    /**
-     * @var float|int
-     */
-    private $secondsPerYear;
-
     public function __construct(?int $valueInSeconds = null)
     {
         if (is_int($valueInSeconds)) {
             $this->setValueInSeconds($valueInSeconds);
         }
-
-        $this->secondsPerDay = $this->secondsPerHour * self::HOURS_PER_DAY;
-        $this->secondsPerMonth = $this->secondsPerDay * (self::DAYS_PER_YEAR / self::MONTHS_PER_YEAR);
-        $this->secondsPerYear = $this->secondsPerDay * self::DAYS_PER_YEAR;
     }
 
     public function setValueInSeconds(int $valueInSeconds): ReadableDuration
@@ -179,7 +155,7 @@ class ReadableDuration
 
     public function getInYears(): int
     {
-        return (int) round($this->getInSeconds() / $this->secondsPerYear);
+        return (int) round($this->getInSeconds() / self::SECONDS_PER_YEAR);
     }
 
     public function getMonths(): int
@@ -201,7 +177,7 @@ class ReadableDuration
 
     public function getInMonths(): int
     {
-        return (int) round($this->getInSeconds() / $this->secondsPerMonth);
+        return (int) round($this->getInSeconds() / self::SECONDS_PER_MONTH);
     }
 
     public function getDays(): int
@@ -223,7 +199,7 @@ class ReadableDuration
 
     public function getInDays(): int
     {
-        return (int) round($this->getInSeconds() / $this->secondsPerDay);
+        return (int) round($this->getInSeconds() / self::SECONDS_PER_DAY);
     }
 
     public function getHours(): int
@@ -245,7 +221,7 @@ class ReadableDuration
 
     public function getInHours(): int
     {
-        return (int) round($this->getInSeconds() / $this->secondsPerHour);
+        return (int) round($this->getInSeconds() / self::SECONDS_PER_HOUR);
     }
 
     public function getMinutes(): int
