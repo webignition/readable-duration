@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\Tests\ReadableDuration;
+namespace webignition\ReadableDuration\Tests;
 
 use webignition\ReadableDuration\Factory;
 
