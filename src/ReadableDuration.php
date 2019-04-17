@@ -6,13 +6,6 @@ class ReadableDuration
 {
     const MAX_APPROPRIATE_UNITS_PRECISION = 6;
 
-    const INTERVAL_YEAR_KEY = 'y';
-    const INTERVAL_MONTH_KEY = 'm';
-    const INTERVAL_DAY_KEY = 'd';
-    const INTERVAL_HOUR_KEY = 'h';
-    const INTERVAL_MINUTE_KEY = 'i';
-    const INTERVAL_SECOND_KEY = 's';
-
     /**
      * @var array
      */
@@ -38,12 +31,12 @@ class ReadableDuration
      * @var array
      */
     private $unitsToIntervalUnits = [
-        Units::UNIT_YEAR => self::INTERVAL_YEAR_KEY,
-        Units::UNIT_MONTH => self::INTERVAL_MONTH_KEY,
-        Units::UNIT_DAY => self::INTERVAL_DAY_KEY,
-        Units::UNIT_HOUR => self::INTERVAL_HOUR_KEY,
-        Units::UNIT_MINUTE => self::INTERVAL_MINUTE_KEY,
-        Units::UNIT_SECOND  => self::INTERVAL_SECOND_KEY,
+        Units::UNIT_YEAR => IntervalKeys::YEAR,
+        Units::UNIT_MONTH => IntervalKeys::MONTH,
+        Units::UNIT_DAY => IntervalKeys::DAY,
+        Units::UNIT_HOUR => IntervalKeys::HOUR,
+        Units::UNIT_MINUTE => IntervalKeys::MINUTE,
+        Units::UNIT_SECOND  => IntervalKeys::SECOND,
     ];
 
     /**
@@ -119,7 +112,7 @@ class ReadableDuration
 
     public function getYears(): int
     {
-        return $this->interval->{self::INTERVAL_YEAR_KEY};
+        return $this->interval->{IntervalKeys::YEAR};
     }
 
     public function getRoundedYears(): int
@@ -141,7 +134,7 @@ class ReadableDuration
 
     public function getMonths(): int
     {
-        return $this->interval->{self::INTERVAL_MONTH_KEY};
+        return $this->interval->{IntervalKeys::MONTH};
     }
 
     public function getRoundedMonths(): int
@@ -163,7 +156,7 @@ class ReadableDuration
 
     public function getDays(): int
     {
-        return $this->interval->{self::INTERVAL_DAY_KEY};
+        return $this->interval->{IntervalKeys::DAY};
     }
 
     public function getRoundedDays(): int
@@ -185,7 +178,7 @@ class ReadableDuration
 
     public function getHours(): int
     {
-        return $this->interval->{self::INTERVAL_HOUR_KEY};
+        return $this->interval->{IntervalKeys::HOUR};
     }
 
     public function getRoundedHours(): int
@@ -207,7 +200,7 @@ class ReadableDuration
 
     public function getMinutes(): int
     {
-        return $this->interval->{self::INTERVAL_MINUTE_KEY};
+        return $this->interval->{IntervalKeys::MINUTE};
     }
 
     public function getInMinutes(): int
@@ -229,7 +222,7 @@ class ReadableDuration
 
     public function getSeconds(): int
     {
-        return $this->interval->{self::INTERVAL_SECOND_KEY};
+        return $this->interval->{IntervalKeys::SECOND};
     }
 
     public function getInSeconds(): int
