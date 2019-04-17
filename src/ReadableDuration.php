@@ -86,18 +86,11 @@ class ReadableDuration
      */
     private $comparatorTime = null;
 
-    /**
-     * @var float|int
-     */
-    private $secondsPerYear;
-
     public function __construct(?int $valueInSeconds = null)
     {
         if (is_int($valueInSeconds)) {
             $this->setValueInSeconds($valueInSeconds);
         }
-
-        $this->secondsPerYear = self::SECONDS_PER_DAY * self::DAYS_PER_YEAR;
     }
 
     public function setValueInSeconds(int $valueInSeconds): ReadableDuration
@@ -162,7 +155,7 @@ class ReadableDuration
 
     public function getInYears(): int
     {
-        return (int) round($this->getInSeconds() / $this->secondsPerYear);
+        return (int) round($this->getInSeconds() / self::SECONDS_PER_YEAR);
     }
 
     public function getMonths(): int
