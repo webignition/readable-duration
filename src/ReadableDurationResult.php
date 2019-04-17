@@ -60,7 +60,7 @@ class ReadableDurationResult
 
     public function getInYears(): int
     {
-        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_YEAR);
+        return (int) round($this->valueInSeconds / Durations::SECONDS_PER_YEAR);
     }
 
     public function getMonths(): int
@@ -82,7 +82,7 @@ class ReadableDurationResult
 
     public function getInMonths(): int
     {
-        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_MONTH);
+        return (int) round($this->valueInSeconds / Durations::SECONDS_PER_MONTH);
     }
 
     public function getDays(): int
@@ -104,7 +104,7 @@ class ReadableDurationResult
 
     public function getInDays(): int
     {
-        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_DAY);
+        return (int) round($this->valueInSeconds / Durations::SECONDS_PER_DAY);
     }
 
     public function getHours(): int
@@ -126,7 +126,7 @@ class ReadableDurationResult
 
     public function getInHours(): int
     {
-        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_HOUR);
+        return (int) round($this->valueInSeconds / Durations::SECONDS_PER_HOUR);
     }
 
     public function getMinutes(): int
@@ -136,7 +136,7 @@ class ReadableDurationResult
 
     public function getInMinutes(): int
     {
-        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_MINUTE);
+        return (int) round($this->valueInSeconds / Durations::SECONDS_PER_MINUTE);
     }
 
     public function getRoundedMinutes(): int
