@@ -5,6 +5,7 @@ namespace webignition\Tests\ReadableDuration;
 
 use webignition\ReadableDuration\Durations;
 use webignition\ReadableDuration\ReadableDuration;
+use webignition\ReadableDuration\Units;
 
 class ReadableDurationTest extends AbstractReadableDurationTest
 {
@@ -724,23 +725,23 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 7,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                 ]
@@ -750,7 +751,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 1,
                     ],
                 ]
@@ -760,7 +761,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 1,
                     ],
                 ]
@@ -770,7 +771,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MINUTE,
+                        'unit' => Units::UNIT_MINUTE,
                         'value' => 1,
                     ],
                 ]
@@ -780,7 +781,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MINUTE,
+                        'unit' => Units::UNIT_MINUTE,
                         'value' => 1,
                     ],
                 ]
@@ -790,7 +791,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_HOUR,
+                        'unit' => Units::UNIT_HOUR,
                         'value' => 1,
                     ],
                 ]
@@ -800,7 +801,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_HOUR,
+                        'unit' => Units::UNIT_HOUR,
                         'value' => 1,
                     ],
                 ]
@@ -810,7 +811,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                 ]
@@ -820,7 +821,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_HOUR,
+                        'unit' => Units::UNIT_HOUR,
                         'value' => 1,
                     ],
                 ]
@@ -830,7 +831,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 1,
                     ],
                 ]
@@ -840,7 +841,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 1,
                     ],
                 ]
@@ -850,7 +851,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 1,
                     ],
                 ]
@@ -860,7 +861,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 6,
                     ],
                 ]
@@ -870,11 +871,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 5,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_DAY,
+                        'unit' => Units::UNIT_DAY,
                         'value' => 27,
                     ],
                 ]
@@ -884,7 +885,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 6,
                     ],
                 ]
@@ -894,7 +895,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                 ]
@@ -904,11 +905,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 11,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_DAY,
+                        'unit' => Units::UNIT_DAY,
                         'value' => 30,
                     ],
                 ]
@@ -918,7 +919,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                 ]
@@ -928,11 +929,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 11,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_DAY,
+                        'unit' => Units::UNIT_DAY,
                         'value' => 30,
                     ],
                 ]
@@ -942,7 +943,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                 ]
@@ -952,11 +953,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 6,
                     ],
                 ]
@@ -966,7 +967,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 3,
                     ],
                 ]
@@ -976,11 +977,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 3,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 5,
                     ],
                 ]
@@ -990,15 +991,15 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 3,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 3,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 4,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_DAY,
+                        'unit' => Units::UNIT_DAY,
                         'value' => 23,
                     ],
                 ]

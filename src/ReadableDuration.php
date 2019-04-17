@@ -6,13 +6,6 @@ class ReadableDuration
 {
     const MAX_APPROPRIATE_UNITS_PRECISION = 6;
 
-    const UNIT_YEAR = 'year';
-    const UNIT_MONTH = 'month';
-    const UNIT_DAY = 'day';
-    const UNIT_HOUR = 'hour';
-    const UNIT_MINUTE = 'minute';
-    const UNIT_SECOND = 'second';
-
     const INTERVAL_YEAR_KEY = 'y';
     const INTERVAL_MONTH_KEY = 'm';
     const INTERVAL_DAY_KEY = 'd';
@@ -24,11 +17,11 @@ class ReadableDuration
      * @var array
      */
     private $unitThresholds = [
-        self::UNIT_MONTH => Durations::MONTHS_PER_YEAR,
-        self::UNIT_DAY => Durations::DAYS_PER_MONTH,
-        self::UNIT_HOUR => Durations::HOURS_PER_DAY,
-        self::UNIT_MINUTE => Durations::MINUTES_PER_HOUR,
-        self::UNIT_SECOND => Durations::SECONDS_PER_MINUTE
+        Units::UNIT_MONTH => Durations::MONTHS_PER_YEAR,
+        Units::UNIT_DAY => Durations::DAYS_PER_MONTH,
+        Units::UNIT_HOUR => Durations::HOURS_PER_DAY,
+        Units::UNIT_MINUTE => Durations::MINUTES_PER_HOUR,
+        Units::UNIT_SECOND => Durations::SECONDS_PER_MINUTE
     ];
 
     /**
@@ -45,23 +38,23 @@ class ReadableDuration
      * @var array
      */
     private $unitsToIntervalUnits = [
-        self::UNIT_YEAR => self::INTERVAL_YEAR_KEY,
-        self::UNIT_MONTH => self::INTERVAL_MONTH_KEY,
-        self::UNIT_DAY => self::INTERVAL_DAY_KEY,
-        self::UNIT_HOUR => self::INTERVAL_HOUR_KEY,
-        self::UNIT_MINUTE => self::INTERVAL_MINUTE_KEY,
-        self::UNIT_SECOND  => self::INTERVAL_SECOND_KEY,
+        Units::UNIT_YEAR => self::INTERVAL_YEAR_KEY,
+        Units::UNIT_MONTH => self::INTERVAL_MONTH_KEY,
+        Units::UNIT_DAY => self::INTERVAL_DAY_KEY,
+        Units::UNIT_HOUR => self::INTERVAL_HOUR_KEY,
+        Units::UNIT_MINUTE => self::INTERVAL_MINUTE_KEY,
+        Units::UNIT_SECOND  => self::INTERVAL_SECOND_KEY,
     ];
 
     /**
      * @var array
      */
     private $unitIncremement = [
-        self::UNIT_SECOND => self::UNIT_MINUTE,
-        self::UNIT_MINUTE => self::UNIT_HOUR,
-        self::UNIT_HOUR => self::UNIT_DAY,
-        self::UNIT_DAY => self::UNIT_MONTH,
-        self::UNIT_MONTH => self::UNIT_YEAR,
+        Units::UNIT_SECOND => Units::UNIT_MINUTE,
+        Units::UNIT_MINUTE => Units::UNIT_HOUR,
+        Units::UNIT_HOUR => Units::UNIT_DAY,
+        Units::UNIT_DAY => Units::UNIT_MONTH,
+        Units::UNIT_MONTH => Units::UNIT_YEAR,
     ];
 
     /**
@@ -295,7 +288,7 @@ class ReadableDuration
         $currentUnit = $unitValue['unit'];
         $currentValue = $unitValue['value'];
 
-        if (self::UNIT_YEAR === $currentUnit) {
+        if (Units::UNIT_YEAR === $currentUnit) {
             return $unitValues;
         }
 
