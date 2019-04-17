@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
 
 namespace webignition\Tests\ReadableDuration;
 
@@ -8,35 +9,17 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 {
     /**
      * @dataProvider setValueInSecondsGetInSecondsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param int $expectedSeconds
      */
-    public function testSetValueInSecondsGetInSeconds($valueInSeconds, $expectedSeconds)
+    public function testSetValueInSecondsGetInSeconds(int $valueInSeconds, int $expectedSeconds)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedSeconds, $this->readableDuration->getInSeconds());
     }
 
-    /**
-     * @return array
-     */
-    public function setValueInSecondsGetInSecondsDataProvider()
+    public function setValueInSecondsGetInSecondsDataProvider(): array
     {
         return [
-            'non-scalar' => [
-                'valueInSeconds' => [],
-                'expectedSeconds' => 0,
-            ],
-            'zero' => [
-                'valueInSeconds' => 0,
-                'expectedSeconds' => 0,
-            ],
-            'zero as string' => [
-                'valueInSeconds' => '0',
-                'expectedSeconds' => 0,
-            ],
             'negative' => [
                 'valueInSeconds' => -1,
                 'expectedSeconds' => -1,
@@ -49,15 +32,14 @@ class ReadableDurationTest extends AbstractReadableDurationTest
     }
 
     /**
-     * @dataProvider isFutureDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param bool $expectedIsPast
-     * @param bool $expectedIsPresent
-     * @param bool $expectedIsFuture
+     * @dataProvider isPastIsPresntIsFutureDataProvider
      */
-    public function testIsPastIsPresentIsFuture($valueInSeconds, $expectedIsPast, $expectedIsPresent, $expectedIsFuture)
-    {
+    public function testIsPastIsPresentIsFuture(
+        int $valueInSeconds,
+        bool $expectedIsPast,
+        bool $expectedIsPresent,
+        bool $expectedIsFuture
+    ) {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedIsPast, $this->readableDuration->isPast());
@@ -65,10 +47,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
         $this->assertEquals($expectedIsFuture, $this->readableDuration->isFuture());
     }
 
-    /**
-     * @return array
-     */
-    public function isFutureDataProvider()
+    public function isPastIsPresntIsFutureDataProvider(): array
     {
         return [
             'now' => [
@@ -94,21 +73,15 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getYearsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedYears
      */
-    public function testGetYears($valueInSeconds, $expectedYears)
+    public function testGetYears(int $valueInSeconds, int $expectedYears)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedYears, $this->readableDuration->getYears());
     }
 
-    /**
-     * @return array
-     */
-    public function getYearsDataProvider()
+    public function getYearsDataProvider(): array
     {
         $oneYearInSeconds = 366 * 86400;
         $twoYearsInSeconds = $oneYearInSeconds * 2;
@@ -147,21 +120,15 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getRoundedYearsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param int $expectedRoundedYears
      */
-    public function testGetRoundedYears($valueInSeconds, $expectedRoundedYears)
+    public function testGetRoundedYears(int $valueInSeconds, int $expectedRoundedYears)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedRoundedYears, $this->readableDuration->getRoundedYears());
     }
 
-    /**
-     * @return array
-     */
-    public function getRoundedYearsDataProvider()
+    public function getRoundedYearsDataProvider(): array
     {
         $oneYearInSeconds = 366 * 86400;
         $sixMonthsInSeconds = $oneYearInSeconds / 2;
@@ -209,21 +176,15 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getInYearsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param int $expectedYears
      */
-    public function testGetInYears($valueInSeconds, $expectedYears)
+    public function testGetInYears(int $valueInSeconds, int $expectedYears)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedYears, $this->readableDuration->getInYears());
     }
 
-    /**
-     * @return array
-     */
-    public function getInYearsDataProvider()
+    public function getInYearsDataProvider(): array
     {
         $oneYearInSeconds = 366 * 86400;
         $sixMonthsInSeconds = $oneYearInSeconds / 2;
@@ -271,21 +232,15 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getMonthsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedMonths
      */
-    public function testGetMonths($valueInSeconds, $expectedMonths)
+    public function testGetMonths(int $valueInSeconds, int $expectedMonths)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedMonths, $this->readableDuration->getMonths());
     }
 
-    /**
-     * @return array
-     */
-    public function getMonthsDataProvider()
+    public function getMonthsDataProvider(): array
     {
         $oneMonthInSeconds = 86400 * 31;
 
@@ -315,43 +270,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getRoundedMonthsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedRoundedMonths
      */
-    public function testGetRoundedMonths($valueInSeconds, $expectedRoundedMonths)
+    public function testGetRoundedMonths(int $valueInSeconds, int $expectedRoundedMonths)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedRoundedMonths, $this->readableDuration->getRoundedMonths());
     }
 
-    /**
-     * @return array
-     */
-    public function getRoundedMonthsDataProvider()
+    public function getRoundedMonthsDataProvider(): array
     {
-        $oneMonthInSeconds = 86400 * 31;
-
         return [
             'zero seconds is zero roundedMonths' => [
                 'valueInSeconds' => 0,
                 'expectedRoundedMonths' => 0,
             ],
             '0.8 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds * 0.8,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MONTH * 0.8),
                 'expectedRoundedMonths' => 1,
             ],
             '1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH,
                 'expectedRoundedMonths' => 1,
             ],
             '1.1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds * 1.1,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MONTH * 1.1),
                 'expectedRoundedMonths' => 1,
             ],
             '-1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * -1,
                 'expectedRoundedMonths' => 1,
             ],
         ];
@@ -359,43 +306,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getInMonthsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedInMonths
      */
-    public function testGetInMonths($valueInSeconds, $expectedInMonths)
+    public function testGetInMonths(int $valueInSeconds, int $expectedInMonths)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedInMonths, $this->readableDuration->getInMonths());
     }
 
-    /**
-     * @return array
-     */
-    public function getInMonthsDataProvider()
+    public function getInMonthsDataProvider(): array
     {
-        $oneMonthInSeconds = 86400 * 31;
-
         return [
             'zero seconds is zero inMonths' => [
                 'valueInSeconds' => 0,
                 'expectedInMonths' => 0,
             ],
             '1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH,
                 'expectedInMonths' => 1,
             ],
             '-1 month in seconds is 1 month' => [
-                'valueInSeconds' => $oneMonthInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * -1,
                 'expectedInMonths' => -1,
             ],
             '2 inMonths in seconds is 2 months' => [
-                'valueInSeconds' => ($oneMonthInSeconds * 2),
+                'valueInSeconds' => (ReadableDuration::SECONDS_PER_MONTH * 2),
                 'expectedInMonths' => 2,
             ],
             '-2 inMonths in seconds is 2 months' => [
-                'valueInSeconds' => $oneMonthInSeconds * 2 * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * 2 * -1,
                 'expectedInMonths' => -2,
             ],
         ];
@@ -403,43 +342,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getDaysDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedDays
      */
-    public function testGetDays($valueInSeconds, $expectedDays)
+    public function testGetDays(int $valueInSeconds, int $expectedDays)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedDays, $this->readableDuration->getDays());
     }
 
-    /**
-     * @return array
-     */
-    public function getDaysDataProvider()
+    public function getDaysDataProvider(): array
     {
-        $oneDayInSeconds = 86400;
-
         return [
             'zero seconds is zero days' => [
                 'valueInSeconds' => 0,
                 'expectedDays' => 0,
             ],
             '1 day in seconds is 1 day' => [
-                'valueInSeconds' => $oneDayInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
                 'expectedDays' => 1,
             ],
             '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => $oneDayInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
                 'expectedDays' => 1,
             ],
             '2 days in seconds is 2 days' => [
-                'valueInSeconds' => ($oneDayInSeconds * 2),
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2,
                 'expectedDays' => 2,
             ],
             '-2 days in seconds is -2 days' => [
-                'valueInSeconds' => $oneDayInSeconds * 2 * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2 * -1,
                 'expectedDays' => 2,
             ],
         ];
@@ -447,43 +378,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getRoundedDaysDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedRoundedDays
      */
-    public function testGetRoundedDays($valueInSeconds, $expectedRoundedDays)
+    public function testGetRoundedDays(int $valueInSeconds, int $expectedRoundedDays)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedRoundedDays, $this->readableDuration->getRoundedDays());
     }
 
-    /**
-     * @return array
-     */
-    public function getRoundedDaysDataProvider()
+    public function getRoundedDaysDataProvider(): array
     {
-        $oneDayInSeconds = 86400;
-
         return [
             'zero seconds is zero days' => [
                 'valueInSeconds' => 0,
                 'expectedRoundedDays' => 0,
             ],
             '0.8 days in seconds is 1 day' => [
-                'valueInSeconds' => $oneDayInSeconds * 0.8,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_DAY * 0.8),
                 'expectedRoundedDays' => 1,
             ],
             '1 day in seconds is 1 day' => [
-                'valueInSeconds' => $oneDayInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
                 'expectedRoundedDays' => 1,
             ],
             '1.1 day in seconds is 1 day' => [
-                'valueInSeconds' => $oneDayInSeconds * 1.1,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_DAY * 1.1),
                 'expectedRoundedDays' => 1,
             ],
             '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => $oneDayInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
                 'expectedRoundedDays' => 1,
             ],
         ];
@@ -491,43 +414,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getInDaysDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedInDays
      */
-    public function testGetInDays($valueInSeconds, $expectedInDays)
+    public function testGetInDays(int $valueInSeconds, int $expectedInDays)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedInDays, $this->readableDuration->getInDays());
     }
 
-    /**
-     * @return array
-     */
-    public function getInDaysDataProvider()
+    public function getInDaysDataProvider(): array
     {
-        $oneDayInSeconds = 86400;
-
         return [
             'zero seconds is zero days' => [
                 'valueInSeconds' => 0,
                 'expectedInDays' => 0,
             ],
             '1 day in seconds is 1 day' => [
-                'valueInSeconds' => $oneDayInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
                 'expectedInDays' => 1,
             ],
             '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => $oneDayInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
                 'expectedInDays' => -1,
             ],
             '2 days in seconds is 2 days' => [
-                'valueInSeconds' => ($oneDayInSeconds * 2),
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2,
                 'expectedInDays' => 2,
             ],
             '-2 days in seconds is -2 days' => [
-                'valueInSeconds' => $oneDayInSeconds * 2 * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2 * -1,
                 'expectedInDays' => -2,
             ],
         ];
@@ -535,43 +450,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getHoursDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedHours
      */
-    public function testGetHours($valueInSeconds, $expectedHours)
+    public function testGetHours(int $valueInSeconds, int $expectedHours)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedHours, $this->readableDuration->getHours());
     }
 
-    /**
-     * @return array
-     */
-    public function getHoursDataProvider()
+    public function getHoursDataProvider(): array
     {
-        $oneHourInSeconds = 3600;
-
         return [
             'zero seconds is zero hours' => [
                 'valueInSeconds' => 0,
                 'expectedHours' => 0,
             ],
             '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => $oneHourInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
                 'expectedHours' => 1,
             ],
             '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => $oneHourInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
                 'expectedHours' => 1,
             ],
             '2 hours in seconds is 2 hours' => [
-                'valueInSeconds' => ($oneHourInSeconds * 2),
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2,
                 'expectedHours' => 2,
             ],
             '-2 hours in seconds is -2 hours' => [
-                'valueInSeconds' => $oneHourInSeconds * 2 * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2 * -1,
                 'expectedHours' => 2,
             ],
         ];
@@ -579,43 +486,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getRoundedHoursDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedRoundedHours
      */
-    public function testGetRoundedHours($valueInSeconds, $expectedRoundedHours)
+    public function testGetRoundedHours(int $valueInSeconds, int $expectedRoundedHours)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedRoundedHours, $this->readableDuration->getRoundedHours());
     }
 
-    /**
-     * @return array
-     */
-    public function getRoundedHoursDataProvider()
+    public function getRoundedHoursDataProvider(): array
     {
-        $oneHourInSeconds = 3600;
-
         return [
             'zero seconds is zero hours' => [
                 'valueInSeconds' => 0,
                 'expectedRoundedHours' => 0,
             ],
             '0.8 hours in seconds is 1 hour' => [
-                'valueInSeconds' => $oneHourInSeconds * 0.8,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_HOUR * 0.8),
                 'expectedRoundedHours' => 1,
             ],
             '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => $oneHourInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
                 'expectedRoundedHours' => 1,
             ],
             '1.1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => $oneHourInSeconds * 1.1,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_HOUR * 1.1),
                 'expectedRoundedHours' => 1,
             ],
             '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => $oneHourInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
                 'expectedRoundedHours' => 1,
             ],
         ];
@@ -623,43 +522,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getInHoursDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedInHours
      */
-    public function testGetInHours($valueInSeconds, $expectedInHours)
+    public function testGetInHours(int $valueInSeconds, int $expectedInHours)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedInHours, $this->readableDuration->getInHours());
     }
 
-    /**
-     * @return array
-     */
-    public function getInHoursDataProvider()
+    public function getInHoursDataProvider(): array
     {
-        $oneHourInSeconds = 3600;
-
         return [
             'zero seconds is zero hours' => [
                 'valueInSeconds' => 0,
                 'expectedInHours' => 0,
             ],
             '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => $oneHourInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
                 'expectedInHours' => 1,
             ],
             '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => $oneHourInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
                 'expectedInHours' => -1,
             ],
             '2 hours in seconds is 2 hours' => [
-                'valueInSeconds' => ($oneHourInSeconds * 2),
+                'valueInSeconds' => (ReadableDuration::SECONDS_PER_HOUR * 2),
                 'expectedInHours' => 2,
             ],
             '-2 hours in seconds is -2 hours' => [
-                'valueInSeconds' => $oneHourInSeconds * 2 * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2 * -1,
                 'expectedInHours' => -2,
             ],
         ];
@@ -667,43 +558,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getMinutesDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedMinutes
      */
-    public function testGetMinutes($valueInSeconds, $expectedMinutes)
+    public function testGetMinutes(int $valueInSeconds, int $expectedMinutes)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedMinutes, $this->readableDuration->getMinutes());
     }
 
-    /**
-     * @return array
-     */
-    public function getMinutesDataProvider()
+    public function getMinutesDataProvider(): array
     {
-        $oneMinuteInSeconds = 60;
-
         return [
             'zero seconds is zero minutes' => [
                 'valueInSeconds' => 0,
                 'expectedMinutes' => 0,
             ],
             '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => $oneMinuteInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
                 'expectedMinutes' => 1,
             ],
             '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => $oneMinuteInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
                 'expectedMinutes' => 1,
             ],
             '2 minutes in seconds is 2 minutes' => [
-                'valueInSeconds' => ($oneMinuteInSeconds * 2),
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2,
                 'expectedMinutes' => 2,
             ],
             '-2 minutes in seconds is -2 minutes' => [
-                'valueInSeconds' => $oneMinuteInSeconds * 2 * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2 * -1,
                 'expectedMinutes' => 2,
             ],
         ];
@@ -711,43 +594,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getRoundedMinutesDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedRoundedMinutes
      */
-    public function testGetRoundedMinutes($valueInSeconds, $expectedRoundedMinutes)
+    public function testGetRoundedMinutes(int $valueInSeconds, int $expectedRoundedMinutes)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedRoundedMinutes, $this->readableDuration->getRoundedMinutes());
     }
 
-    /**
-     * @return array
-     */
-    public function getRoundedMinutesDataProvider()
+    public function getRoundedMinutesDataProvider(): array
     {
-        $oneMinuteInSeconds = 60;
-
         return [
             'zero seconds is zero minutes' => [
                 'valueInSeconds' => 0,
                 'expectedRoundedMinutes' => 0,
             ],
             '0.8 minutes in seconds is 1 minute' => [
-                'valueInSeconds' => $oneMinuteInSeconds * 0.8,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MINUTE * 0.8),
                 'expectedRoundedMinutes' => 1,
             ],
             '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => $oneMinuteInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
                 'expectedRoundedMinutes' => 1,
             ],
             '1.1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => $oneMinuteInSeconds * 1.1,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MINUTE * 1.1),
                 'expectedRoundedMinutes' => 1,
             ],
             '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => $oneMinuteInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
                 'expectedRoundedMinutes' => 1,
             ],
         ];
@@ -755,43 +630,35 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getInMinutesDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedInMinutes
      */
-    public function testGetInMinutes($valueInSeconds, $expectedInMinutes)
+    public function testGetInMinutes(int $valueInSeconds, int $expectedInMinutes)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedInMinutes, $this->readableDuration->getInMinutes());
     }
 
-    /**
-     * @return array
-     */
-    public function getInMinutesDataProvider()
+    public function getInMinutesDataProvider(): array
     {
-        $oneMinuteInSeconds = 60;
-
         return [
             'zero seconds is zero minutes' => [
                 'valueInSeconds' => 0,
                 'expectedInMinutes' => 0,
             ],
             '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => $oneMinuteInSeconds,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
                 'expectedInMinutes' => 1,
             ],
             '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => $oneMinuteInSeconds * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
                 'expectedInMinutes' => -1,
             ],
             '2 minutes in seconds is 2 minutes' => [
-                'valueInSeconds' => ($oneMinuteInSeconds * 2),
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2,
                 'expectedInMinutes' => 2,
             ],
             '-2 minutes in seconds is -2 minutes' => [
-                'valueInSeconds' => $oneMinuteInSeconds * 2 * -1,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2 * -1,
                 'expectedInMinutes' => -2,
             ],
         ];
@@ -799,21 +666,15 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getSecondsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param float $expectedSeconds
      */
-    public function testGetSeconds($valueInSeconds, $expectedSeconds)
+    public function testGetSeconds(int $valueInSeconds, int $expectedSeconds)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedSeconds, $this->readableDuration->getSeconds());
     }
 
-    /**
-     * @return array
-     */
-    public function getSecondsDataProvider()
+    public function getSecondsDataProvider(): array
     {
         return [
             'zero seconds is zero seconds' => [
@@ -841,31 +702,17 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     /**
      * @dataProvider getInMostAppropriateUnitsDataProvider
-     *
-     * @param int $valueInSeconds
-     * @param int $precision
-     * @param array $expectedUnits
      */
-    public function testGetInMostAppropriateUnits($valueInSeconds, $precision, array $expectedUnits)
+    public function testGetInMostAppropriateUnits(int $valueInSeconds, int $precision, array $expectedUnits)
     {
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedUnits, $this->readableDuration->getInMostAppropriateUnits($precision));
-//        var_dump($expectedUnits, $this->readableDuration->getInMostAppropriateUnits($precision));
-//        exit();
     }
 
-    /**
-     * @return array
-     */
-    public function getInMostAppropriateUnitsDataProvider()
+    public function getInMostAppropriateUnitsDataProvider(): array
     {
         return [
-            'zero, precision={non-scalar}' => [
-                'valueInSeconds' => 0,
-                'precision' => [],
-                'expectedUnits' => []
-            ],
             'zero, precision=1' => [
                 'valueInSeconds' => 0,
                 'precision' => 1,
@@ -1090,7 +937,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~one and a half years, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 1.5,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 1.5),
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -1100,7 +947,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~one and a half years, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 1.5,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 1.5),
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -1114,7 +961,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~3.4 years, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 3.4,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -1124,7 +971,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~3.4 years, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 3.4,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -1138,7 +985,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~3.4 years, precision=3' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 3.4,
+                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
                 'precision' => 3,
                 'expectedUnits' => [
                     [
