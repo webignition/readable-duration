@@ -141,7 +141,6 @@ class ReadableDuration
             $comparatorTime->modify('+'.$this->valueInSeconds.' second');
 
             $this->comparatorTime = $comparatorTime;
-
         }
 
         $this->interval = $this->currentTime->diff($this->comparatorTime);
