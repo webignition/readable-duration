@@ -3,7 +3,9 @@
 
 namespace webignition\Tests\ReadableDuration;
 
+use webignition\ReadableDuration\Durations;
 use webignition\ReadableDuration\ReadableDuration;
+use webignition\ReadableDuration\Units;
 
 class ReadableDurationTest extends AbstractReadableDurationTest
 {
@@ -83,7 +85,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     public function getYearsDataProvider(): array
     {
-        $aboutOneYearInSeconds = ReadableDuration::SECONDS_PER_YEAR + ReadableDuration::SECONDS_PER_DAY;
+        $aboutOneYearInSeconds = Durations::SECONDS_PER_YEAR + Durations::SECONDS_PER_DAY;
         $aboutTwoYearsInSeconds = $aboutOneYearInSeconds * 2;
 
         return [
@@ -92,11 +94,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedYears' => 0,
             ],
             'one hour is zero years' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
             '-one hour is zero years' => [
-                'valueInSeconds' => -ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => -Durations::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
             '~1 year in seconds is one year' => [
@@ -130,7 +132,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     public function getRoundedYearsDataProvider(): array
     {
-        $aboutOneYearInSeconds = ReadableDuration::SECONDS_PER_YEAR + ReadableDuration::SECONDS_PER_DAY;
+        $aboutOneYearInSeconds = Durations::SECONDS_PER_YEAR + Durations::SECONDS_PER_DAY;
         $sixMonthsInSeconds = $aboutOneYearInSeconds / 2;
         $twoYearsInSeconds = $aboutOneYearInSeconds * 2;
 
@@ -140,11 +142,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedRoundedYears' => 0,
             ],
             '3600 seconds is zero years' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedRoundedYears' => 0,
             ],
             '-3600 seconds is zero years' => [
-                'valueInSeconds' => -ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => -Durations::SECONDS_PER_HOUR,
                 'expectedRoundedYears' => 0,
             ],
             '6 months in seconds is zero years' => [
@@ -186,7 +188,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     public function getInYearsDataProvider(): array
     {
-        $aboutOneYearInSeconds = ReadableDuration::SECONDS_PER_YEAR + ReadableDuration::SECONDS_PER_DAY;
+        $aboutOneYearInSeconds = Durations::SECONDS_PER_YEAR + Durations::SECONDS_PER_DAY;
         $sixMonthsInSeconds = $aboutOneYearInSeconds / 2;
         $twoYearsInSeconds = $aboutOneYearInSeconds * 2;
 
@@ -196,11 +198,11 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedYears' => 0,
             ],
             'one hour is zero years' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
             '-one hour is zero years' => [
-                'valueInSeconds' => -ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => -Durations::SECONDS_PER_HOUR,
                 'expectedYears' => 0,
             ],
             '6 months in seconds is one year' => [
@@ -242,7 +244,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
 
     public function getMonthsDataProvider(): array
     {
-        $aboutOneMonthInSeconds = ReadableDuration::SECONDS_PER_MONTH + ReadableDuration::SECONDS_PER_DAY;
+        $aboutOneMonthInSeconds = Durations::SECONDS_PER_MONTH + Durations::SECONDS_PER_DAY;
 
         return [
             'zero seconds is zero months' => [
@@ -286,19 +288,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedRoundedMonths' => 0,
             ],
             '0.8 month in seconds is 1 month' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MONTH * 0.8),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_MONTH * 0.8),
                 'expectedRoundedMonths' => 1,
             ],
             '1 month in seconds is 1 month' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH,
                 'expectedRoundedMonths' => 1,
             ],
             '1.1 month in seconds is 1 month' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MONTH * 1.1),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_MONTH * 1.1),
                 'expectedRoundedMonths' => 1,
             ],
             '-1 month in seconds is 1 month' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * -1,
                 'expectedRoundedMonths' => 1,
             ],
         ];
@@ -322,19 +324,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedInMonths' => 0,
             ],
             '1 month in seconds is 1 month' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH,
                 'expectedInMonths' => 1,
             ],
             '-1 month in seconds is 1 month' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * -1,
                 'expectedInMonths' => -1,
             ],
             '2 inMonths in seconds is 2 months' => [
-                'valueInSeconds' => (ReadableDuration::SECONDS_PER_MONTH * 2),
+                'valueInSeconds' => (Durations::SECONDS_PER_MONTH * 2),
                 'expectedInMonths' => 2,
             ],
             '-2 inMonths in seconds is 2 months' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MONTH * 2 * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * 2 * -1,
                 'expectedInMonths' => -2,
             ],
         ];
@@ -358,19 +360,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedDays' => 0,
             ],
             '1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY,
                 'expectedDays' => 1,
             ],
             '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * -1,
                 'expectedDays' => 1,
             ],
             '2 days in seconds is 2 days' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * 2,
                 'expectedDays' => 2,
             ],
             '-2 days in seconds is -2 days' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2 * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * 2 * -1,
                 'expectedDays' => 2,
             ],
         ];
@@ -394,19 +396,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedRoundedDays' => 0,
             ],
             '0.8 days in seconds is 1 day' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_DAY * 0.8),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_DAY * 0.8),
                 'expectedRoundedDays' => 1,
             ],
             '1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY,
                 'expectedRoundedDays' => 1,
             ],
             '1.1 day in seconds is 1 day' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_DAY * 1.1),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_DAY * 1.1),
                 'expectedRoundedDays' => 1,
             ],
             '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * -1,
                 'expectedRoundedDays' => 1,
             ],
         ];
@@ -430,19 +432,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedInDays' => 0,
             ],
             '1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY,
                 'expectedInDays' => 1,
             ],
             '-1 day in seconds is 1 day' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * -1,
                 'expectedInDays' => -1,
             ],
             '2 days in seconds is 2 days' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * 2,
                 'expectedInDays' => 2,
             ],
             '-2 days in seconds is -2 days' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * 2 * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_DAY * 2 * -1,
                 'expectedInDays' => -2,
             ],
         ];
@@ -466,19 +468,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedHours' => 0,
             ],
             '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedHours' => 1,
             ],
             '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * -1,
                 'expectedHours' => 1,
             ],
             '2 hours in seconds is 2 hours' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * 2,
                 'expectedHours' => 2,
             ],
             '-2 hours in seconds is -2 hours' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2 * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * 2 * -1,
                 'expectedHours' => 2,
             ],
         ];
@@ -502,19 +504,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedRoundedHours' => 0,
             ],
             '0.8 hours in seconds is 1 hour' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_HOUR * 0.8),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_HOUR * 0.8),
                 'expectedRoundedHours' => 1,
             ],
             '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedRoundedHours' => 1,
             ],
             '1.1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_HOUR * 1.1),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_HOUR * 1.1),
                 'expectedRoundedHours' => 1,
             ],
             '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * -1,
                 'expectedRoundedHours' => 1,
             ],
         ];
@@ -538,19 +540,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedInHours' => 0,
             ],
             '1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'expectedInHours' => 1,
             ],
             '-1 hour in seconds is 1 hour' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * -1,
                 'expectedInHours' => -1,
             ],
             '2 hours in seconds is 2 hours' => [
-                'valueInSeconds' => (ReadableDuration::SECONDS_PER_HOUR * 2),
+                'valueInSeconds' => (Durations::SECONDS_PER_HOUR * 2),
                 'expectedInHours' => 2,
             ],
             '-2 hours in seconds is -2 hours' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR * 2 * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR * 2 * -1,
                 'expectedInHours' => -2,
             ],
         ];
@@ -574,19 +576,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedMinutes' => 0,
             ],
             '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE,
                 'expectedMinutes' => 1,
             ],
             '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * -1,
                 'expectedMinutes' => 1,
             ],
             '2 minutes in seconds is 2 minutes' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * 2,
                 'expectedMinutes' => 2,
             ],
             '-2 minutes in seconds is -2 minutes' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2 * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * 2 * -1,
                 'expectedMinutes' => 2,
             ],
         ];
@@ -610,19 +612,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedRoundedMinutes' => 0,
             ],
             '0.8 minutes in seconds is 1 minute' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MINUTE * 0.8),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_MINUTE * 0.8),
                 'expectedRoundedMinutes' => 1,
             ],
             '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE,
                 'expectedRoundedMinutes' => 1,
             ],
             '1.1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_MINUTE * 1.1),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_MINUTE * 1.1),
                 'expectedRoundedMinutes' => 1,
             ],
             '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * -1,
                 'expectedRoundedMinutes' => 1,
             ],
         ];
@@ -646,19 +648,19 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'expectedInMinutes' => 0,
             ],
             '1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE,
                 'expectedInMinutes' => 1,
             ],
             '-1 minute in seconds is 1 minute' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * -1,
                 'expectedInMinutes' => -1,
             ],
             '2 minutes in seconds is 2 minutes' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * 2,
                 'expectedInMinutes' => 2,
             ],
             '-2 minutes in seconds is -2 minutes' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE * 2 * -1,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE * 2 * -1,
                 'expectedInMinutes' => -2,
             ],
         ];
@@ -723,23 +725,23 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 7,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 0,
                     ],
                 ]
@@ -749,7 +751,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 1,
                     ],
                 ]
@@ -759,245 +761,245 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_SECOND,
+                        'unit' => Units::UNIT_SECOND,
                         'value' => 1,
                     ],
                 ]
             ],
             'one minute, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MINUTE,
+                        'unit' => Units::UNIT_MINUTE,
                         'value' => 1,
                     ],
                 ]
             ],
             'one minute, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
+                'valueInSeconds' => Durations::SECONDS_PER_MINUTE,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MINUTE,
+                        'unit' => Units::UNIT_MINUTE,
                         'value' => 1,
                     ],
                 ]
             ],
             '~one hour, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR - 1,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR - 1,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_HOUR,
+                        'unit' => Units::UNIT_HOUR,
                         'value' => 1,
                     ],
                 ]
             ],
             'one hour, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_HOUR,
+                        'unit' => Units::UNIT_HOUR,
                         'value' => 1,
                     ],
                 ]
             ],
             'one yearish, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
+                'valueInSeconds' => Durations::SECONDS_PER_YEAR,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                 ]
             ],
             'one hour, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
+                'valueInSeconds' => Durations::SECONDS_PER_HOUR,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_HOUR,
+                        'unit' => Units::UNIT_HOUR,
                         'value' => 1,
                     ],
                 ]
             ],
             '~one month, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 1,
                     ],
                 ]
             ],
             'one month, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 1,
                     ],
                 ]
             ],
             'one month, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 1,
                     ],
                 ]
             ],
             '~nearly six months, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * 6,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 6,
                     ],
                 ]
             ],
             '~nearly six months, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * 6,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 5,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_DAY,
+                        'unit' => Units::UNIT_DAY,
                         'value' => 27,
                     ],
                 ]
             ],
             ' six months, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
+                'valueInSeconds' => Durations::SECONDS_PER_MONTH * 6,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 6,
                     ],
                 ]
             ],
             '~nearly one year, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR - 1,
+                'valueInSeconds' => Durations::SECONDS_PER_YEAR - 1,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                 ]
             ],
             '~nearly one year, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR - 1,
+                'valueInSeconds' => Durations::SECONDS_PER_YEAR - 1,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 11,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_DAY,
+                        'unit' => Units::UNIT_DAY,
                         'value' => 30,
                     ],
                 ]
             ],
             '~one year, precision=1' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
+                'valueInSeconds' => Durations::SECONDS_PER_YEAR,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                 ]
             ],
             '~one year, precision=2' => [
-                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
+                'valueInSeconds' => Durations::SECONDS_PER_YEAR,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 11,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_DAY,
+                        'unit' => Units::UNIT_DAY,
                         'value' => 30,
                     ],
                 ]
             ],
             '~one and a half years, precision=1' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 1.5),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_YEAR * 1.5),
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                 ]
             ],
             '~one and a half years, precision=2' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 1.5),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_YEAR * 1.5),
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 1,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 6,
                     ],
                 ]
             ],
             '~3.4 years, precision=1' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_YEAR * 3.4),
                 'precision' => 1,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 3,
                     ],
                 ]
             ],
             '~3.4 years, precision=2' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_YEAR * 3.4),
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 3,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 5,
                     ],
                 ]
             ],
             '~3.4 years, precision=3' => [
-                'valueInSeconds' => (int) (ReadableDuration::SECONDS_PER_YEAR * 3.4),
+                'valueInSeconds' => (int) (Durations::SECONDS_PER_YEAR * 3.4),
                 'precision' => 3,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
+                        'unit' => Units::UNIT_YEAR,
                         'value' => 3,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'unit' => Units::UNIT_MONTH,
                         'value' => 4,
                     ],
                     [
-                        'unit' => ReadableDuration::UNIT_DAY,
+                        'unit' => Units::UNIT_DAY,
                         'value' => 23,
                     ],
                 ]

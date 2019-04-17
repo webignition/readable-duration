@@ -4,43 +4,17 @@ namespace webignition\ReadableDuration;
 
 class ReadableDuration
 {
-    const SECONDS_PER_MINUTE = 60;
-    const MINUTES_PER_HOUR = 60;
-    const HOURS_PER_DAY = 24;
-    const DAYS_PER_MONTH = 30; // approximate!
-    const MONTHS_PER_YEAR = 12;
-    const DAYS_PER_YEAR = 365; // approximate!
-
-    const SECONDS_PER_DAY = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR * self::HOURS_PER_DAY;
-    const SECONDS_PER_HOUR = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
-    const SECONDS_PER_MONTH = self::SECONDS_PER_DAY * self::DAYS_PER_MONTH;
-    const SECONDS_PER_YEAR = self::SECONDS_PER_DAY * self::DAYS_PER_YEAR;
-
     const MAX_APPROPRIATE_UNITS_PRECISION = 6;
-
-    const UNIT_YEAR = 'year';
-    const UNIT_MONTH = 'month';
-    const UNIT_DAY = 'day';
-    const UNIT_HOUR = 'hour';
-    const UNIT_MINUTE = 'minute';
-    const UNIT_SECOND = 'second';
-
-    const INTERVAL_YEAR_KEY = 'y';
-    const INTERVAL_MONTH_KEY = 'm';
-    const INTERVAL_DAY_KEY = 'd';
-    const INTERVAL_HOUR_KEY = 'h';
-    const INTERVAL_MINUTE_KEY = 'i';
-    const INTERVAL_SECOND_KEY = 's';
 
     /**
      * @var array
      */
     private $unitThresholds = [
-        self::UNIT_MONTH => self::MONTHS_PER_YEAR,
-        self::UNIT_DAY => self::DAYS_PER_MONTH,
-        self::UNIT_HOUR => self::HOURS_PER_DAY,
-        self::UNIT_MINUTE => self::MINUTES_PER_HOUR,
-        self::UNIT_SECOND => self::SECONDS_PER_MINUTE
+        Units::UNIT_MONTH => Durations::MONTHS_PER_YEAR,
+        Units::UNIT_DAY => Durations::DAYS_PER_MONTH,
+        Units::UNIT_HOUR => Durations::HOURS_PER_DAY,
+        Units::UNIT_MINUTE => Durations::MINUTES_PER_HOUR,
+        Units::UNIT_SECOND => Durations::SECONDS_PER_MINUTE
     ];
 
     /**
@@ -57,23 +31,23 @@ class ReadableDuration
      * @var array
      */
     private $unitsToIntervalUnits = [
-        self::UNIT_YEAR => self::INTERVAL_YEAR_KEY,
-        self::UNIT_MONTH => self::INTERVAL_MONTH_KEY,
-        self::UNIT_DAY => self::INTERVAL_DAY_KEY,
-        self::UNIT_HOUR => self::INTERVAL_HOUR_KEY,
-        self::UNIT_MINUTE => self::INTERVAL_MINUTE_KEY,
-        self::UNIT_SECOND  => self::INTERVAL_SECOND_KEY,
+        Units::UNIT_YEAR => IntervalKeys::YEAR,
+        Units::UNIT_MONTH => IntervalKeys::MONTH,
+        Units::UNIT_DAY => IntervalKeys::DAY,
+        Units::UNIT_HOUR => IntervalKeys::HOUR,
+        Units::UNIT_MINUTE => IntervalKeys::MINUTE,
+        Units::UNIT_SECOND  => IntervalKeys::SECOND,
     ];
 
     /**
      * @var array
      */
     private $unitIncremement = [
-        self::UNIT_SECOND => self::UNIT_MINUTE,
-        self::UNIT_MINUTE => self::UNIT_HOUR,
-        self::UNIT_HOUR => self::UNIT_DAY,
-        self::UNIT_DAY => self::UNIT_MONTH,
-        self::UNIT_MONTH => self::UNIT_YEAR,
+        Units::UNIT_SECOND => Units::UNIT_MINUTE,
+        Units::UNIT_MINUTE => Units::UNIT_HOUR,
+        Units::UNIT_HOUR => Units::UNIT_DAY,
+        Units::UNIT_DAY => Units::UNIT_MONTH,
+        Units::UNIT_MONTH => Units::UNIT_YEAR,
     ];
 
     /**
@@ -138,7 +112,7 @@ class ReadableDuration
 
     public function getYears(): int
     {
-        return $this->interval->{self::INTERVAL_YEAR_KEY};
+        return $this->interval->{IntervalKeys::YEAR};
     }
 
     public function getRoundedYears(): int
@@ -155,12 +129,12 @@ class ReadableDuration
 
     public function getInYears(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_YEAR);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_YEAR);
     }
 
     public function getMonths(): int
     {
-        return $this->interval->{self::INTERVAL_MONTH_KEY};
+        return $this->interval->{IntervalKeys::MONTH};
     }
 
     public function getRoundedMonths(): int
@@ -177,12 +151,12 @@ class ReadableDuration
 
     public function getInMonths(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_MONTH);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_MONTH);
     }
 
     public function getDays(): int
     {
-        return $this->interval->{self::INTERVAL_DAY_KEY};
+        return $this->interval->{IntervalKeys::DAY};
     }
 
     public function getRoundedDays(): int
@@ -199,12 +173,12 @@ class ReadableDuration
 
     public function getInDays(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_DAY);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_DAY);
     }
 
     public function getHours(): int
     {
-        return $this->interval->{self::INTERVAL_HOUR_KEY};
+        return $this->interval->{IntervalKeys::HOUR};
     }
 
     public function getRoundedHours(): int
@@ -221,17 +195,17 @@ class ReadableDuration
 
     public function getInHours(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_HOUR);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_HOUR);
     }
 
     public function getMinutes(): int
     {
-        return $this->interval->{self::INTERVAL_MINUTE_KEY};
+        return $this->interval->{IntervalKeys::MINUTE};
     }
 
     public function getInMinutes(): int
     {
-        return (int) round($this->getInSeconds() / self::SECONDS_PER_MINUTE);
+        return (int) round($this->getInSeconds() / Durations::SECONDS_PER_MINUTE);
     }
 
     public function getRoundedMinutes(): int
@@ -248,7 +222,7 @@ class ReadableDuration
 
     public function getSeconds(): int
     {
-        return $this->interval->{self::INTERVAL_SECOND_KEY};
+        return $this->interval->{IntervalKeys::SECOND};
     }
 
     public function getInSeconds(): int
@@ -307,7 +281,7 @@ class ReadableDuration
         $currentUnit = $unitValue['unit'];
         $currentValue = $unitValue['value'];
 
-        if (self::UNIT_YEAR === $currentUnit) {
+        if (Units::UNIT_YEAR === $currentUnit) {
             return $unitValues;
         }
 
