@@ -89,11 +89,6 @@ class ReadableDuration
     /**
      * @var float|int
      */
-    private $secondsPerDay;
-
-    /**
-     * @var float|int
-     */
     private $secondsPerMonth;
 
     /**
@@ -107,9 +102,8 @@ class ReadableDuration
             $this->setValueInSeconds($valueInSeconds);
         }
 
-        $this->secondsPerDay = self::SECONDS_PER_HOUR * self::HOURS_PER_DAY;
-        $this->secondsPerMonth = $this->secondsPerDay * (self::DAYS_PER_YEAR / self::MONTHS_PER_YEAR);
-        $this->secondsPerYear = $this->secondsPerDay * self::DAYS_PER_YEAR;
+        $this->secondsPerMonth = self::SECONDS_PER_DAY * (self::DAYS_PER_YEAR / self::MONTHS_PER_YEAR);
+        $this->secondsPerYear = self::SECONDS_PER_DAY * self::DAYS_PER_YEAR;
     }
 
     public function setValueInSeconds(int $valueInSeconds): ReadableDuration
@@ -218,7 +212,7 @@ class ReadableDuration
 
     public function getInDays(): int
     {
-        return (int) round($this->getInSeconds() / $this->secondsPerDay);
+        return (int) round($this->getInSeconds() / self::SECONDS_PER_DAY);
     }
 
     public function getHours(): int
