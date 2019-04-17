@@ -42,13 +42,24 @@ class Factory
 
     public function create(int $valueInSeconds): ReadableDuration
     {
-        $currentTime = new \DateTime();
-        $comparatorTime = clone $currentTime;
+        $currentTime = new \DateTimeImmutable();
 
-        if ($valueInSeconds !== 0) {
-            $comparatorTime->modify('+' . $valueInSeconds . ' second');
-        }
+        return $this->createFromDateTimeRelativeToDateTime(
+            $currentTime->modify('+' . $valueInSeconds . ' second'),
+            $currentTime
+        );
+    }
 
+    public function createFromDateTime(\DateTime $dateTime)
+    {
+        return $this->createFromDateTimeRelativeToDateTime($dateTime, new \DateTime());
+    }
+
+    private function createFromDateTimeRelativeToDateTime(
+        \DateTimeInterface $comparatorTime,
+        \DateTimeInterface $currentTime
+    ) {
+        $valueInSeconds = $comparatorTime->getTimestamp() - $currentTime->getTimestamp();
         $dateInterval = $currentTime->diff($comparatorTime);
 
         return new ReadableDuration($valueInSeconds, $dateInterval);
