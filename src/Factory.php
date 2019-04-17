@@ -6,9 +6,6 @@ class Factory
 {
     const MAX_APPROPRIATE_UNITS_PRECISION = 6;
 
-    /**
-     * @var array
-     */
     private $unitThresholds = [
         Units::UNIT_MONTH => Durations::MONTHS_PER_YEAR,
         Units::UNIT_DAY => Durations::DAYS_PER_MONTH,
@@ -17,10 +14,7 @@ class Factory
         Units::UNIT_SECOND => Durations::SECONDS_PER_MINUTE
     ];
 
-    /**
-     * @var array
-     */
-    private $unitsToIntervalUnits = [
+    private $unitsToIntervalKeys = [
         Units::UNIT_YEAR => IntervalKeys::YEAR,
         Units::UNIT_MONTH => IntervalKeys::MONTH,
         Units::UNIT_DAY => IntervalKeys::DAY,
@@ -29,10 +23,16 @@ class Factory
         Units::UNIT_SECOND  => IntervalKeys::SECOND,
     ];
 
-    /**
-     * @var array
-     */
-    private $unitIncremement = [
+    private $intervalKeysToUnits = [
+        IntervalKeys::YEAR => Units::UNIT_YEAR,
+        IntervalKeys::MONTH => Units::UNIT_MONTH,
+        IntervalKeys::DAY => Units::UNIT_DAY ,
+        IntervalKeys::HOUR => Units::UNIT_HOUR,
+        IntervalKeys::MINUTE => Units::UNIT_MINUTE,
+        IntervalKeys::SECOND => Units::UNIT_SECOND
+    ];
+
+    private $unitIncrement = [
         Units::UNIT_SECOND => Units::UNIT_MINUTE,
         Units::UNIT_MINUTE => Units::UNIT_HOUR,
         Units::UNIT_HOUR => Units::UNIT_DAY,
@@ -40,7 +40,7 @@ class Factory
         Units::UNIT_MONTH => Units::UNIT_YEAR,
     ];
 
-    public function create(int $valueInSeconds)
+    public function create(int $valueInSeconds): ReadableDurationResult
     {
         $currentTime = new \DateTime();
         $comparatorTime = clone $currentTime;
@@ -84,11 +84,11 @@ class Factory
             } else {
                 $values[] = [
                     'unit' => $this->getLargestIntervalUnit($interval),
-                    'value' => $interval->{$this->unitsToIntervalUnits[$this->getLargestIntervalUnit($interval)]}
+                    'value' => $interval->{$this->unitsToIntervalKeys[$this->getLargestIntervalUnit($interval)]}
                 ];
             }
 
-            $interval->{$this->unitsToIntervalUnits[$this->getLargestIntervalUnit($interval)]} = 0;
+            $interval->{$this->unitsToIntervalKeys[$this->getLargestIntervalUnit($interval)]} = 0;
 
             $workingReadableDuration = new ReadableDurationResult(
                 $workingReadableDuration->getInSeconds(),
@@ -118,7 +118,7 @@ class Factory
         if ($this->isApproachingThreshold($currentValue, $currentUnit)) {
             return [
                 [
-                    'unit' => $this->unitIncremement[$currentUnit],
+                    'unit' => $this->unitIncrement[$currentUnit],
                     'value' => 1,
                 ],
             ];
@@ -140,21 +140,12 @@ class Factory
 
     private function getLargestIntervalUnit(\DateInterval $interval): string
     {
-        $intervalUnits = [
-            'y' => 'year',
-            'm' => 'month',
-            'd' => 'day',
-            'h' => 'hour',
-            'i' => 'minute',
-            's' => 'second'
-        ];
-
-        foreach ($intervalUnits as $intervalUnitKey => $unit) {
-            if ($interval->$intervalUnitKey !== 0) {
+        foreach ($this->intervalKeysToUnits as $intervalKey => $unit) {
+            if ($interval->$intervalKey !== 0) {
                 return $unit;
             }
         }
 
-        return 'second';
+        return Units::UNIT_SECOND;
     }
 }
