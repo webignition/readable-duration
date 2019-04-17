@@ -851,6 +851,8 @@ class ReadableDurationTest extends AbstractReadableDurationTest
         $this->readableDuration->setValueInSeconds($valueInSeconds);
 
         $this->assertEquals($expectedUnits, $this->readableDuration->getInMostAppropriateUnits($precision));
+//        var_dump($expectedUnits, $this->readableDuration->getInMostAppropriateUnits($precision));
+//        exit();
     }
 
     /**
@@ -916,7 +918,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             'one minute, precision=1' => [
-                'valueInSeconds' => 60,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -926,7 +928,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             'one minute, precision=2' => [
-                'valueInSeconds' => 60,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_MINUTE,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -936,7 +938,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~one hour, precision=1' => [
-                'valueInSeconds' => 3599,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR - 1,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -946,7 +948,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             'one hour, precision=1' => [
-                'valueInSeconds' => 3600,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -956,7 +958,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             'one yearish, precision=1' => [
-                'valueInSeconds' => 86400 * 360,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -966,7 +968,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             'one hour, precision=2' => [
-                'valueInSeconds' => 3600,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_HOUR,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -976,7 +978,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~one month, precision=1' => [
-                'valueInSeconds' => 86400 * 30,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -986,7 +988,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             'one month, precision=1' => [
-                'valueInSeconds' => 86400 * 31,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -996,7 +998,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             'one month, precision=2' => [
-                'valueInSeconds' => 86400 * 31,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -1006,7 +1008,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~nearly six months, precision=1' => [
-                'valueInSeconds' => 86400 * 30 * 6,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -1016,7 +1018,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~nearly six months, precision=2' => [
-                'valueInSeconds' => 86400 * 30 * 6,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -1030,7 +1032,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             ' six months, precision=1' => [
-                'valueInSeconds' => 86400 * 31 * 6,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_DAY * ReadableDuration::DAYS_PER_MONTH * 6,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -1040,7 +1042,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~nearly one year, precision=1' => [
-                'valueInSeconds' => 86400 * 30 * 12,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR - 1,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -1050,7 +1052,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~nearly one year, precision=2' => [
-                'valueInSeconds' => 86400 * 30 * 12,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR - 1,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -1059,12 +1061,12 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                     ],
                     [
                         'unit' => ReadableDuration::UNIT_DAY,
-                        'value' => 23,
+                        'value' => 30,
                     ],
                 ]
             ],
             '~one year, precision=1' => [
-                'valueInSeconds' => 86400 * 31 * 12,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -1074,21 +1076,21 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~one year, precision=2' => [
-                'valueInSeconds' => 86400 * 31 * 12,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
-                        'unit' => ReadableDuration::UNIT_YEAR,
-                        'value' => 1,
+                        'unit' => ReadableDuration::UNIT_MONTH,
+                        'value' => 11,
                     ],
                     [
                         'unit' => ReadableDuration::UNIT_DAY,
-                        'value' => 7,
+                        'value' => 30,
                     ],
                 ]
             ],
             '~one and a half years, precision=1' => [
-                'valueInSeconds' => 86400 * 45 * 12,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 1.5,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -1098,7 +1100,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~one and a half years, precision=2' => [
-                'valueInSeconds' => 86400 * 45 * 12,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 1.5,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -1112,7 +1114,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~3.4 years, precision=1' => [
-                'valueInSeconds' => 86400 * 31 * 40,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 3.4,
                 'precision' => 1,
                 'expectedUnits' => [
                     [
@@ -1122,7 +1124,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~3.4 years, precision=2' => [
-                'valueInSeconds' => 86400 * 31 * 40,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 3.4,
                 'precision' => 2,
                 'expectedUnits' => [
                     [
@@ -1136,7 +1138,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                 ]
             ],
             '~3.4 years, precision=3' => [
-                'valueInSeconds' => 86400 * 31 * 40,
+                'valueInSeconds' => ReadableDuration::SECONDS_PER_YEAR * 3.4,
                 'precision' => 3,
                 'expectedUnits' => [
                     [
@@ -1149,7 +1151,7 @@ class ReadableDurationTest extends AbstractReadableDurationTest
                     ],
                     [
                         'unit' => ReadableDuration::UNIT_DAY,
-                        'value' => 22,
+                        'value' => 23,
                     ],
                 ]
             ],

@@ -7,9 +7,13 @@ class ReadableDuration
     const SECONDS_PER_MINUTE = 60;
     const MINUTES_PER_HOUR = 60;
     const HOURS_PER_DAY = 24;
-    const DAYS_PER_MONTH = 30.44; // approximate!
+    const DAYS_PER_MONTH = 30; // approximate!
     const MONTHS_PER_YEAR = 12;
-    const DAYS_PER_YEAR = 365.25; // approximate!
+    const DAYS_PER_YEAR = 365; // approximate!
+
+    const SECONDS_PER_DAY = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR * self::HOURS_PER_DAY;
+    const SECONDS_PER_HOUR = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
+    const SECONDS_PER_YEAR = self::SECONDS_PER_DAY * self::DAYS_PER_YEAR;
 
     const MAX_APPROPRIATE_UNITS_PRECISION = 6;
 
@@ -106,7 +110,7 @@ class ReadableDuration
      */
     public function __construct($valueInSeconds = null)
     {
-        $this->setValueInSeconds($valueInSeconds);
+//        $this->setValueInSeconds($valueInSeconds);
 
         $this->secondsPerDay = $this->secondsPerHour * self::HOURS_PER_DAY;
         $this->secondsPerMonth = $this->secondsPerDay * (self::DAYS_PER_YEAR / self::MONTHS_PER_YEAR);
@@ -133,7 +137,10 @@ class ReadableDuration
         if (0 === $this->valueInSeconds) {
             $this->comparatorTime = clone $this->currentTime;
         } else {
-            $this->comparatorTime = new \DateTime('+'.$this->valueInSeconds.' second');
+            $comparatorTime = clone $this->currentTime;
+            $comparatorTime->modify('+'.$this->valueInSeconds.' second');
+
+            $this->comparatorTime = $comparatorTime;
         }
 
         $this->interval = $this->currentTime->diff($this->comparatorTime);
