@@ -106,7 +106,7 @@ class ReadableDuration
      */
     public function __construct($valueInSeconds = null)
     {
-        $this->setValueInSeconds($valueInSeconds);
+//        $this->setValueInSeconds($valueInSeconds);
 
         $this->secondsPerDay = $this->secondsPerHour * self::HOURS_PER_DAY;
         $this->secondsPerMonth = $this->secondsPerDay * (self::DAYS_PER_YEAR / self::MONTHS_PER_YEAR);
@@ -133,7 +133,11 @@ class ReadableDuration
         if (0 === $this->valueInSeconds) {
             $this->comparatorTime = clone $this->currentTime;
         } else {
-            $this->comparatorTime = new \DateTime('+'.$this->valueInSeconds.' second');
+            $comparatorTime = clone $this->currentTime;
+            $comparatorTime->modify('+'.$this->valueInSeconds.' second');
+
+            $this->comparatorTime = $comparatorTime;
+
         }
 
         $this->interval = $this->currentTime->diff($this->comparatorTime);
