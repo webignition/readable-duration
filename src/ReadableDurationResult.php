@@ -20,11 +20,7 @@ class ReadableDurationResult
 
     public function isFuture(): bool
     {
-        if ($this->isPresent()) {
-            return false;
-        }
-
-        return $this->interval->invert === 0;
+        return $this->isPresent() ? false : $this->interval->invert === 0;
     }
 
     public function isPresent(): bool
@@ -34,11 +30,7 @@ class ReadableDurationResult
 
     public function isPast(): bool
     {
-        if ($this->isPresent()) {
-            return false;
-        }
-
-        return $this->interval->invert === 1;
+        return $this->isPresent() ? false : $this->interval->invert === 1;
     }
 
     public function getYears(): int
