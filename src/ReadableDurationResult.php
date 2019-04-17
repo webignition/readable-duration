@@ -13,6 +13,11 @@ class ReadableDurationResult
         $this->interval = $dateInterval;
     }
 
+    public function getDateInterval(): \DateInterval
+    {
+        return $this->interval;
+    }
+
     public function isFuture(): bool
     {
         if ($this->isPresent()) {
