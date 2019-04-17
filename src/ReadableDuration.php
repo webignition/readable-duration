@@ -14,6 +14,7 @@ class ReadableDuration
     const SECONDS_PER_DAY = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR * self::HOURS_PER_DAY;
     const SECONDS_PER_HOUR = self::SECONDS_PER_MINUTE * self::MINUTES_PER_HOUR;
     const SECONDS_PER_YEAR = self::SECONDS_PER_DAY * self::DAYS_PER_YEAR;
+    const SECONDS_PER_MONTH = self::SECONDS_PER_DAY * self::DAYS_PER_MONTH;
 
     const MAX_APPROPRIATE_UNITS_PRECISION = 6;
 
@@ -105,31 +106,19 @@ class ReadableDuration
      */
     private $secondsPerYear;
 
-    /**
-     * @param int $valueInSeconds
-     */
-    public function __construct($valueInSeconds = null)
+    public function __construct(?int $valueInSeconds = null)
     {
-//        $this->setValueInSeconds($valueInSeconds);
+        if (is_int($valueInSeconds)) {
+            $this->setValueInSeconds($valueInSeconds);
+        }
 
         $this->secondsPerDay = $this->secondsPerHour * self::HOURS_PER_DAY;
         $this->secondsPerMonth = $this->secondsPerDay * (self::DAYS_PER_YEAR / self::MONTHS_PER_YEAR);
         $this->secondsPerYear = $this->secondsPerDay * self::DAYS_PER_YEAR;
     }
 
-    /**
-     * @param int $valueInSeconds
-     *
-     * @return ReadableDuration
-     */
-    public function setValueInSeconds($valueInSeconds)
+    public function setValueInSeconds(int $valueInSeconds): ReadableDuration
     {
-        if (!is_scalar($valueInSeconds)) {
-            $valueInSeconds = 0;
-        } else {
-            $valueInSeconds = (int)$valueInSeconds;
-        }
-
         $this->valueInSeconds = $valueInSeconds;
 
         $this->currentTime = new \DateTime();
@@ -148,10 +137,7 @@ class ReadableDuration
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isFuture()
+    public function isFuture(): bool
     {
         if ($this->isPresent()) {
             return false;
@@ -160,18 +146,12 @@ class ReadableDuration
         return $this->interval->invert === 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPresent()
+    public function isPresent(): bool
     {
         return $this->getInSeconds() === 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPast()
+    public function isPast(): bool
     {
         if ($this->isPresent()) {
             return false;
@@ -180,18 +160,12 @@ class ReadableDuration
         return $this->interval->invert === 1;
     }
 
-    /**
-     * @return int
-     */
-    public function getYears()
+    public function getYears(): int
     {
         return $this->interval->{self::INTERVAL_YEAR_KEY};
     }
 
-    /**
-     * @return int
-     */
-    public function getRoundedYears()
+    public function getRoundedYears(): int
     {
         $years = $this->getYears();
         $months = $this->getMonths();
@@ -203,30 +177,20 @@ class ReadableDuration
         return $years + 1;
     }
 
-    /**
-     * @return int
-     */
-    public function getInYears()
+    public function getInYears(): int
     {
-        return (int)round($this->getInSeconds() / $this->secondsPerYear);
+        return (int) round($this->getInSeconds() / $this->secondsPerYear);
     }
 
-    /**
-     * @return int
-     */
-    public function getMonths()
+    public function getMonths(): int
     {
         return $this->interval->{self::INTERVAL_MONTH_KEY};
     }
 
-    /**
-     * @return int
-     */
-    public function getRoundedMonths()
+    public function getRoundedMonths(): int
     {
         $months = $this->getMonths();
         $days = $this->getDays();
-
 
         if ($days <= 15) {
             return $months;
@@ -235,26 +199,17 @@ class ReadableDuration
         return $months + 1;
     }
 
-    /**
-     * @return float
-     */
-    public function getInMonths()
+    public function getInMonths(): int
     {
-        return (int)round($this->getInSeconds() / $this->secondsPerMonth);
+        return (int) round($this->getInSeconds() / $this->secondsPerMonth);
     }
 
-    /**
-     * @return int
-     */
-    public function getDays()
+    public function getDays(): int
     {
         return $this->interval->{self::INTERVAL_DAY_KEY};
     }
 
-    /**
-     * @return int
-     */
-    public function getRoundedDays()
+    public function getRoundedDays(): int
     {
         $days = $this->getDays();
         $hours = $this->getHours();
@@ -266,26 +221,17 @@ class ReadableDuration
         return $days + 1;
     }
 
-    /**
-     * @return float
-     */
-    public function getInDays()
+    public function getInDays(): int
     {
-        return (int)round($this->getInSeconds() / $this->secondsPerDay);
+        return (int) round($this->getInSeconds() / $this->secondsPerDay);
     }
 
-    /**
-     * @return int
-     */
-    public function getHours()
+    public function getHours(): int
     {
         return $this->interval->{self::INTERVAL_HOUR_KEY};
     }
 
-    /**
-     * @return int
-     */
-    public function getRoundedHours()
+    public function getRoundedHours(): int
     {
         $hours = $this->getHours();
         $minutes = $this->getMinutes();
@@ -297,34 +243,22 @@ class ReadableDuration
         return $hours + 1;
     }
 
-    /**
-     * @return float
-     */
-    public function getInHours()
+    public function getInHours(): int
     {
-        return (int)round($this->getInSeconds() / $this->secondsPerHour);
+        return (int) round($this->getInSeconds() / $this->secondsPerHour);
     }
 
-    /**
-     * @return int
-     */
-    public function getMinutes()
+    public function getMinutes(): int
     {
         return $this->interval->{self::INTERVAL_MINUTE_KEY};
     }
 
-    /**
-     * @return float
-     */
-    public function getInMinutes()
+    public function getInMinutes(): int
     {
-        return (int)round($this->getInSeconds() / self::SECONDS_PER_MINUTE);
+        return (int) round($this->getInSeconds() / self::SECONDS_PER_MINUTE);
     }
 
-    /**
-     * @return int
-     */
-    public function getRoundedMinutes()
+    public function getRoundedMinutes(): int
     {
         $minutes = $this->getMinutes();
         $seconds = $this->getSeconds();
@@ -336,34 +270,19 @@ class ReadableDuration
         return $minutes + 1;
     }
 
-    /**
-     * @return int
-     */
-    public function getSeconds()
+    public function getSeconds(): int
     {
         return $this->interval->{self::INTERVAL_SECOND_KEY};
     }
 
-    /**
-     * @return int
-     */
-    public function getInSeconds()
+    public function getInSeconds(): int
     {
         return $this->valueInSeconds;
     }
 
-    /**
-     * @param int $precision
-     *
-     * @return array
-     */
-    public function getInMostAppropriateUnits($precision = 1)
+    public function getInMostAppropriateUnits(int $precision = 1): array
     {
-        if (!is_scalar($precision)) {
-            $precision = 1;
-        }
-
-        $precision = (int)round($precision);
+        $precision = (int) round($precision);
 
         if ($precision > self::MAX_APPROPRIATE_UNITS_PRECISION) {
             $precision = self::MAX_APPROPRIATE_UNITS_PRECISION;
@@ -406,12 +325,7 @@ class ReadableDuration
         return $values;
     }
 
-    /**
-     * @param array $unitValues
-     *
-     * @return array
-     */
-    private function roundUpUnitValues($unitValues)
+    private function roundUpUnitValues(array $unitValues): array
     {
         $unitValue = $unitValues[0];
         $currentUnit = $unitValue['unit'];
@@ -439,15 +353,12 @@ class ReadableDuration
      *
      * @return bool
      */
-    private function isApproachingThreshold($value, $unit)
+    private function isApproachingThreshold($value, string $unit): bool
     {
         return round($value) == round($this->unitThresholds[$unit]);
     }
 
-    /**
-     * @return string
-     */
-    private function getLargestIntervalUnit()
+    private function getLargestIntervalUnit(): string
     {
         $intervalUnits = [
             'y' => 'year',

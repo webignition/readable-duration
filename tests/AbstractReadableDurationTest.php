@@ -4,14 +4,14 @@ namespace webignition\Tests\ReadableDuration;
 
 use webignition\ReadableDuration\ReadableDuration;
 
-abstract class AbstractReadableDurationTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractReadableDurationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ReadableDuration
      */
     protected $readableDuration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
