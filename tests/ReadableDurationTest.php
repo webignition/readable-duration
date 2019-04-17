@@ -1,7 +1,7 @@
 <?php
 /** @noinspection PhpDocSignatureInspection */
 
-namespace webignition\Tests\ReadableDuration;
+namespace webignition\ReadableDuration\Tests;
 
 use webignition\ReadableDuration\Durations;
 use webignition\ReadableDuration\Factory;

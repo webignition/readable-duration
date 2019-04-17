@@ -18,7 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "webignition\\Tests\\ReadableDuration\\": "tests/"
+            "webignition\\ReadableDuration\\Tests\\": "tests/"
         }
     },
     "scripts": {
