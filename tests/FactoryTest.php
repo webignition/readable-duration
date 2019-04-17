@@ -17,6 +17,19 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
         $readableDuration = $factory->create(0);
 
         $this->assertInstanceOf(ReadableDuration::class, $readableDuration);
+        $this->assertEquals(0, $readableDuration->getInSeconds());
+    }
+
+    public function testCreateFromDateTime()
+    {
+        $factory = new Factory();
+
+        $datetime = new \DateTime('- 3600 second');
+
+        $readableDuration = $factory->createFromDateTime($datetime);
+
+        $this->assertInstanceOf(ReadableDuration::class, $readableDuration);
+        $this->assertEquals(-3600, $readableDuration->getInSeconds());
     }
 
     /**
