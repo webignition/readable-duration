@@ -40,7 +40,7 @@ class Factory
         Units::UNIT_MONTH => Units::UNIT_YEAR,
     ];
 
-    public function create(int $valueInSeconds): ReadableDurationResult
+    public function create(int $valueInSeconds): ReadableDuration
     {
         $currentTime = new \DateTime();
         $comparatorTime = clone $currentTime;
@@ -51,10 +51,10 @@ class Factory
 
         $dateInterval = $currentTime->diff($comparatorTime);
 
-        return new ReadableDurationResult($valueInSeconds, $dateInterval);
+        return new ReadableDuration($valueInSeconds, $dateInterval);
     }
 
-    public function getInMostAppropriateUnits(ReadableDurationResult $readableDuration, int $precision = 1): array
+    public function getInMostAppropriateUnits(ReadableDuration $readableDuration, int $precision = 1): array
     {
         $workingReadableDuration = clone $readableDuration;
         $interval = clone $readableDuration->getDateInterval();
@@ -90,7 +90,7 @@ class Factory
 
             $interval->{$this->unitsToIntervalKeys[$this->getLargestIntervalUnit($interval)]} = 0;
 
-            $workingReadableDuration = new ReadableDurationResult(
+            $workingReadableDuration = new ReadableDuration(
                 $workingReadableDuration->getInSeconds(),
                 $interval
             );

@@ -5,7 +5,7 @@ namespace webignition\Tests\ReadableDuration;
 
 use webignition\ReadableDuration\Durations;
 use webignition\ReadableDuration\Factory;
-use webignition\ReadableDuration\ReadableDurationResult;
+use webignition\ReadableDuration\ReadableDuration;
 use webignition\ReadableDuration\Units;
 
 class FactoryTest extends \PHPUnit\Framework\TestCase
@@ -16,7 +16,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
 
         $readableDuration = $factory->create(0);
 
-        $this->assertInstanceOf(ReadableDurationResult::class, $readableDuration);
+        $this->assertInstanceOf(ReadableDuration::class, $readableDuration);
     }
 
     /**

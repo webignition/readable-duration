@@ -2,7 +2,7 @@
 
 namespace webignition\ReadableDuration;
 
-class ReadableDurationResult
+class ReadableDuration
 {
     private $valueInSeconds = 0;
     private $interval = null;

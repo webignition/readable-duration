@@ -5,9 +5,9 @@ namespace webignition\Tests\ReadableDuration;
 
 use webignition\ReadableDuration\Durations;
 use webignition\ReadableDuration\Factory;
-use webignition\ReadableDuration\ReadableDurationResult;
+use webignition\ReadableDuration\ReadableDuration;
 
-class ReadableDurationResultTest extends \PHPUnit\Framework\TestCase
+class ReadableDurationTest extends \PHPUnit\Framework\TestCase
 {
     public function testIsPast()
     {
@@ -626,7 +626,7 @@ class ReadableDurationResultTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    private function create(int $valueInSeconds): ReadableDurationResult
+    private function create(int $valueInSeconds): ReadableDuration
     {
         $factory = new Factory();
 
